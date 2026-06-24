@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "hairplus_landing": {
+      "type": "hairplus-landing",
+      "settings": {
+        "product_handle": "hairplus-polvo-capilar",
+        "hero_eyebrow": "Polvo capilar densificador",
+        "hero_title": "Más pelo.\nAl instante.",
+        "hero_subtitle": "Disimula entradas, coronilla y zonas con poco pelo. Cubre canas y raíces. Sin proceso, sin compromiso.",
+        "social_proof": "+1.100 hombres ya lo usan",
+        "lifestyle_quote": "Sin ritual. Sin\ncompromiso."
+      },
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Me salva para ir a trabajar, tengo muy poco pelo en los costados.",
+            "author": "Martín G. · Buenos Aires"
+          }
+        },
+        "t2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ya es la tercera vez que lo compro. Es lo mejor para disimular los pequeños huecos de la cabeza.",
+            "author": "Federico R. · Córdoba"
+          }
+        },
+        "t3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ahora tengo una ex coronilla. Impecable.",
+            "author": "Diego M. · Rosario"
+          }
+        },
+        "t4": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Cumple su función: disimular el crecimiento de las canas y estirar el tiempo de volver a retocar.",
+            "author": "Lucas P. · Mendoza"
+          }
+        },
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Se nota que lo usás?",
+            "answer": "No. El polvo se integra al cabello existente y replica la densidad natural. Resultado indetectable."
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Mancha la ropa o se transfiere?",
+            "answer": "Dejalo secar 3-4 minutos después de aplicar. Una vez fijo, no mancha ni se transfiere."
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Sale con el agua o el sudor?",
+            "answer": "Resistente al agua y al sudor durante todo el día. Se quita únicamente con shampoo."
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto dura el envase?",
+            "answer": "Los 4g rinden mucho más de lo que parecen. Uso diario: entre 2 y 4 meses."
+          }
+        },
+        "f5": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Sirve si tengo mucha pérdida de pelo?",
+            "answer": "Sí. Disimula zonas finas y da densidad visual. Ideal para alopecia leve o pelo fino."
+          }
+        }
+      },
+      "block_order": ["t1","t2","t3","t4","f1","f2","f3","f4","f5"]
+    }
+  },
+  "order": ["hairplus_landing"]
+}

@@ -1,0 +1,711 @@
+{% comment %}
+  HairPLUS · Landing Page Section — Shopify Online Store 2.0
+  ────────────────────────────────────────────────────────────
+  Instalación: ver README.md en la carpeta raíz de este paquete
+  Versión: 1.0 · Junio 2026
+{% endcomment %}
+
+{%- liquid
+  assign hp        = all_products[section.settings.product_handle]
+  assign cv        = hp.selected_or_first_available_variant
+  assign on_sale   = false
+  if hp.compare_at_price > hp.price
+    assign on_sale = true
+  endif
+  assign testimonial_blocks = section.blocks | where: "type", "testimonial"
+  assign faq_blocks         = section.blocks | where: "type", "faq"
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  .hp-wrap *, .hp-wrap *::before, .hp-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .hp-wrap {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #F9FAF8;
+    color: #0A2633;
+    -webkit-font-smoothing: antialiased;
+    max-width: 390px;
+    margin: 0 auto;
+  }
+
+  /* ── Nav ── */
+  .hp-nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: #F9FAF8;
+    border-bottom: 1px solid #E8E4D6;
+  }
+  .hp-nav img { height: 26px; }
+  .hp-nav-name { font-weight: 700; font-size: 15px; color: #0A2633; }
+  .hp-nav-cta {
+    background: #0A2633; color: #F9FAF8;
+    font-weight: 600; font-size: 13px;
+    padding: 9px 18px; border-radius: 999px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 200ms;
+  }
+  .hp-nav-cta:hover { background: #0d3040; }
+
+  /* ── Hero ── */
+  .hp-hero {
+    background: #0A2633;
+    padding: 40px 24px 36px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .hp-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #B8AA88;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hp-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: #B8AA88; }
+  .hp-hero h1 {
+    font-weight: 700; font-size: 2.75rem; line-height: 1.05;
+    letter-spacing: -0.025em; color: #F9FAF8;
+  }
+  .hp-hero h1 em { color: #B8AA88; font-style: normal; }
+  .hp-hero-sub { font-size: 15px; line-height: 1.6; color: rgba(249,250,248,0.85); }
+  .hp-hero-img {
+    width: 100%; border-radius: 14px; overflow: hidden;
+    aspect-ratio: 1/1; background: #0d2e3e;
+  }
+  .hp-hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ── Price ── */
+  .hp-price-display {
+    font-weight: 700; font-size: 1.125rem; color: #F9FAF8;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hp-price-display s { font-weight: 400; color: rgba(249,250,248,0.55); font-size: 0.875rem; }
+
+  /* ── Buttons ── */
+  .hp-btn-primary {
+    display: block; width: 100%; text-align: center;
+    background: #B8AA88; color: #0A2633;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700; font-size: 16px;
+    padding: 17px 32px; border-radius: 999px; border: none; cursor: pointer;
+    text-decoration: none; transition: background 180ms, transform 100ms;
+  }
+  .hp-btn-primary:hover { background: #a39c80; }
+  .hp-btn-primary:active { transform: scale(0.97); }
+  .hp-btn-primary[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .hp-btn-ghost {
+    display: block; width: 100%; text-align: center;
+    background: transparent; color: #F9FAF8;
+    font-weight: 500; font-size: 14px;
+    border: 1.5px solid rgba(249,250,248,0.22); border-radius: 999px;
+    padding: 14px 32px; cursor: pointer; text-decoration: none;
+    transition: border-color 180ms;
+  }
+  .hp-btn-ghost:hover { border-color: rgba(249,250,248,0.5); }
+  .hp-trust { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(249,250,248,0.75); }
+  .hp-stars { color: #B8AA88; font-size: 13px; }
+
+  /* ── Proof bar ── */
+  .hp-proof {
+    background: #E8E4D6; padding: 16px 20px;
+    display: flex; justify-content: space-around; align-items: center;
+  }
+  .hp-proof-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .hp-proof-num { font-weight: 700; font-size: 22px; color: #0A2633; letter-spacing: -0.02em; }
+  .hp-proof-label { font-size: 10px; font-weight: 500; color: #62717D; letter-spacing: 0.07em; text-transform: uppercase; }
+  .hp-proof-sep { width: 1px; height: 34px; background: #B8AA88; opacity: 0.4; }
+
+  /* ── Generic section wrappers ── */
+  .hp-section       { padding: 48px 24px; }
+  .hp-section-white { padding: 40px 24px; background: #fff; }
+  .hp-section-light { padding: 48px 24px; background: #F9FAF8; }
+  .hp-eyebrow-sm { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #B8AA88; margin-bottom: 10px; }
+  .hp-h2     { font-weight: 700; font-size: 1.875rem; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; color: #0A2633; }
+  .hp-h2-sm  { font-weight: 700; font-size: 1.5rem;   line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; color: #0A2633; }
+
+  /* ── Shade selector ── */
+  .hp-shade-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .hp-shade-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border-radius: 999px; border: 1.5px solid #E8E4D6;
+    background: #fff; cursor: pointer; font-size: 13px; font-weight: 500;
+    color: #0A2633; transition: border-color 150ms, background 150ms;
+  }
+  .hp-shade-btn.active { border-color: #0A2633; background: #0A2633; color: #F9FAF8; }
+  .hp-shade-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Features ── */
+  .hp-features-img { width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 24px; }
+  .hp-features-img img { width: 100%; display: block; }
+  .hp-features-list { display: flex; flex-direction: column; gap: 14px; }
+  .hp-feature {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px; background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(10,38,51,0.07);
+  }
+  .hp-feature-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: #E8E4D6; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #0A2633;
+  }
+  .hp-feature-title { font-weight: 600; font-size: 15px; margin-bottom: 3px; color: #0A2633; }
+  .hp-feature-desc  { font-size: 13px; line-height: 1.55; color: #62717D; }
+
+  /* ── Lifestyle ── */
+  .hp-lifestyle { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; }
+  .hp-lifestyle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hp-lifestyle-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px;
+    background: linear-gradient(to top, rgba(10,38,51,0.82) 0%, transparent 100%);
+  }
+  .hp-lifestyle-quote { font-weight: 700; font-size: 1.375rem; color: #F9FAF8; line-height: 1.2; letter-spacing: -0.02em; }
+  .hp-lifestyle-quote em { color: #B8AA88; font-style: normal; }
+
+  /* ── Steps ── */
+  .hp-steps { display: flex; flex-direction: column; }
+  .hp-step { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid #E8E4D6; }
+  .hp-step:last-child { border-bottom: none; }
+  .hp-step-num   { font-weight: 700; font-size: 2rem; color: #B8AA88; line-height: 1; flex-shrink: 0; width: 32px; }
+  .hp-step-title { font-weight: 600; font-size: 16px; margin-bottom: 4px; color: #0A2633; }
+  .hp-step-desc  { font-size: 13px; color: #62717D; line-height: 1.55; }
+
+  /* ── FAQ ── */
+  .hp-faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .hp-faq-item { padding: 16px; border-radius: 12px; border: 1px solid #E8E4D6; cursor: pointer; }
+  .hp-faq-q {
+    font-weight: 600; font-size: 14px; color: #0A2633;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .hp-faq-a { font-size: 13px; line-height: 1.6; color: #62717D; margin-top: 8px; display: none; }
+  .hp-faq-item.open .hp-faq-a { display: block; }
+  .hp-faq-arrow { transition: transform 200ms; font-size: 12px; }
+  .hp-faq-item.open .hp-faq-arrow { transform: rotate(180deg); }
+
+  /* ── Testimonials ── */
+  .hp-testimonials { display: flex; flex-direction: column; gap: 12px; }
+  .hp-testimonial { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 2px 12px rgba(10,38,51,0.07); }
+  .hp-testimonial-stars  { color: #B8AA88; font-size: 13px; margin-bottom: 8px; }
+  .hp-testimonial-text   { font-size: 14px; line-height: 1.6; color: #0A2633; font-style: italic; margin-bottom: 10px; }
+  .hp-testimonial-author { font-size: 11px; font-weight: 600; color: #62717D; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ── CTA ── */
+  .hp-cta { background: #0A2633; padding: 52px 24px; text-align: center; }
+  .hp-cta-title { font-weight: 700; font-size: 2.25rem; color: #F9FAF8; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 10px; }
+  .hp-cta-title em { color: #B8AA88; font-style: normal; }
+  .hp-cta-sub   { font-size: 15px; color: rgba(249,250,248,0.80); margin-bottom: 8px; line-height: 1.6; }
+  .hp-cta-price { font-weight: 700; font-size: 1.5rem; color: #F9FAF8; margin-bottom: 24px; }
+  .hp-cta-price s { font-weight: 400; color: rgba(249,250,248,0.55); font-size: 1rem; margin-right: 6px; }
+  .hp-trust-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+  .hp-trust-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: rgba(249,250,248,0.70); font-weight: 500; }
+
+  /* ── Footer ── */
+  .hp-footer { padding: 28px 24px; border-top: 1px solid #E8E4D6; text-align: center; }
+  .hp-footer img { height: 22px; opacity: 0.45; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto; }
+  .hp-footer p { font-size: 11px; color: #62717D; line-height: 1.6; }
+  .hp-footer a { color: #62717D; }
+</style>
+
+<div class="hp-wrap">
+
+  <!-- ── Nav ── -->
+  <nav class="hp-nav">
+    {%- if section.settings.logo != blank -%}
+      <img src="{{ section.settings.logo | image_url: width: 200 }}"
+           alt="{{ shop.name }}" height="26" width="auto" loading="eager">
+    {%- else -%}
+      <span class="hp-nav-name">{{ shop.name }}</span>
+    {%- endif -%}
+    <a href="{{ hp.url }}" class="hp-nav-cta">Comprar</a>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hp-hero">
+    <div class="hp-eyebrow">{{ section.settings.hero_eyebrow }}</div>
+
+    <h1>
+      {%- assign title_lines = section.settings.hero_title | split: '\n' -%}
+      {%- if title_lines.size > 1 -%}
+        {{ title_lines[0] }}<br><em>{{ title_lines[1] }}</em>
+      {%- else -%}
+        {{ section.settings.hero_title }}
+      {%- endif -%}
+    </h1>
+
+    <p class="hp-hero-sub">{{ section.settings.hero_subtitle }}</p>
+
+    <div class="hp-hero-img">
+      {%- if section.settings.hero_image != blank -%}
+        {{ section.settings.hero_image | image_url: width: 780
+           | image_tag: loading: 'eager', alt: hp.title }}
+      {%- elsif hp.featured_image != blank -%}
+        {{ hp.featured_image | image_url: width: 780
+           | image_tag: loading: 'eager', alt: hp.title }}
+      {%- endif -%}
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="hp-price-display">
+        {%- if on_sale -%}
+          <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
+        {%- endif -%}
+        {{ hp.price | money_without_trailing_zeros }} ARS
+      </div>
+
+      {%- form 'product', hp, id: 'hp-hero-form' -%}
+        <input type="hidden" name="id" value="{{ cv.id }}">
+        <button type="submit" class="hp-btn-primary"
+                {%- unless hp.available %} disabled{%- endunless -%}>
+          {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
+        </button>
+      {%- endform -%}
+
+      <a href="#hp-como-funciona" class="hp-btn-ghost">Ver cómo funciona</a>
+    </div>
+
+    <div class="hp-trust">
+      <span class="hp-stars">★ 4.9/5</span>
+      <span>{{ section.settings.social_proof }}</span>
+    </div>
+  </section>
+
+  <!-- ── Proof bar ── -->
+  <div class="hp-proof">
+    <div class="hp-proof-item">
+      <span class="hp-proof-num">30s</span>
+      <span class="hp-proof-label">aplicación</span>
+    </div>
+    <div class="hp-proof-sep"></div>
+    <div class="hp-proof-item">
+      <span class="hp-proof-num">4.9</span>
+      <span class="hp-proof-label">puntuación</span>
+    </div>
+    <div class="hp-proof-sep"></div>
+    <div class="hp-proof-item">
+      <span class="hp-proof-num">0%</span>
+      <span class="hp-proof-label">proceso</span>
+    </div>
+    <div class="hp-proof-sep"></div>
+    <div class="hp-proof-item">
+      <span class="hp-proof-num">4g</span>
+      <span class="hp-proof-label">contenido</span>
+    </div>
+  </div>
+
+  <!-- ── Variant / Shade selector ── -->
+  {%- if hp.variants.size > 1 -%}
+  <div class="hp-section-white">
+    <div class="hp-eyebrow-sm">Elegí tu color</div>
+    <h2 class="hp-h2-sm">{{ hp.variants.size }} tonos para un resultado indetectable.</h2>
+    <div class="hp-shade-grid" id="hp-shades">
+      {%- for variant in hp.variants -%}
+        {%- case variant.title -%}
+          {%- when 'Negro'   -%}{%- assign v_color = '#1a1a1a' -%}
+          {%- when 'Castaño' -%}{%- assign v_color = '#6B3F2A' -%}
+          {%- when 'Rubio'   -%}{%- assign v_color = '#C49A5A' -%}
+          {%- when 'Gris'    -%}{%- assign v_color = '#8E9DAF' -%}
+          {%- else -%}          {%- assign v_color = '#888888' -%}
+        {%- endcase -%}
+        <button class="hp-shade-btn{% if forloop.first %} active{% endif %}"
+                data-variant-id="{{ variant.id }}"
+                onclick="hpSelectShade(this)">
+          <span class="hp-shade-dot" style="background:{{ v_color }};"></span>
+          {{ variant.title }}
+        </button>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- ── Product features ── -->
+  <div class="hp-section" style="padding-top:36px;">
+    <div class="hp-eyebrow-sm">El producto</div>
+    <h2 class="hp-h2">Todo lo que necesitás, en un estuche.</h2>
+
+    {%- if section.settings.features_image != blank -%}
+    <div class="hp-features-img">
+      {{ section.settings.features_image | image_url: width: 780
+         | image_tag: loading: 'lazy', alt: hp.title }}
+    </div>
+    {%- endif -%}
+
+    <div class="hp-features-list">
+      <div class="hp-feature">
+        <div class="hp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div>
+          <div class="hp-feature-title">Cobertura al instante</div>
+          <div class="hp-feature-desc">Disimula entradas, coronilla y zonas finas en 30 segundos. Resultado natural, indetectable.</div>
+        </div>
+      </div>
+      <div class="hp-feature">
+        <div class="hp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="hp-feature-title">Resistente al agua y sudor</div>
+          <div class="hp-feature-desc">Aguanta todo el día. Se quita solo con shampoo — sin compromiso, sin manchas.</div>
+        </div>
+      </div>
+      <div class="hp-feature">
+        <div class="hp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><circle cx="11" cy="11" r="3"/></svg>
+        </div>
+        <div>
+          <div class="hp-feature-title">Espejo incorporado</div>
+          <div class="hp-feature-desc">Para revisar tu línea de pelo o barba donde estés. Estuche compacto, entra en cualquier bolsillo.</div>
+        </div>
+      </div>
+      <div class="hp-feature">
+        <div class="hp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div>
+          <div class="hp-feature-title">Rinde mucho más de lo que parece</div>
+          <div class="hp-feature-desc">4g de polvo concentrado. El frasco es chico pero no se acaba nunca.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Lifestyle photo ── -->
+  {%- if section.settings.lifestyle_image != blank -%}
+  <div class="hp-lifestyle">
+    {{ section.settings.lifestyle_image | image_url: width: 780
+       | image_tag: loading: 'lazy', alt: 'HairPLUS lifestyle' }}
+    <div class="hp-lifestyle-overlay">
+      <div class="hp-lifestyle-quote">
+        {%- assign q_lines = section.settings.lifestyle_quote | split: '\n' -%}
+        {%- if q_lines.size > 1 -%}
+          {{ q_lines[0] }}<br><em>{{ q_lines[1] }}</em>
+        {%- else -%}
+          {{ section.settings.lifestyle_quote }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- ── Cómo funciona ── -->
+  <div id="hp-como-funciona" class="hp-section">
+    <div class="hp-eyebrow-sm">Modo de uso</div>
+    <h2 class="hp-h2">Tres pasos. 30 segundos.</h2>
+    <div class="hp-steps">
+      <div class="hp-step">
+        <span class="hp-step-num">01</span>
+        <div>
+          <div class="hp-step-title">Pelo seco</div>
+          <div class="hp-step-desc">Aplicá siempre sobre pelo seco para mejor adherencia y cobertura.</div>
+        </div>
+      </div>
+      <div class="hp-step">
+        <span class="hp-step-num">02</span>
+        <div>
+          <div class="hp-step-title">Cargá el cepillo con el polvo</div>
+          <div class="hp-step-desc">Girá el estuche, cargá la brocha incorporada y aplicá suavemente en las zonas con poco pelo.</div>
+        </div>
+      </div>
+      <div class="hp-step">
+        <span class="hp-step-num">03</span>
+        <div>
+          <div class="hp-step-title">Listo — opcional: fijar con spray</div>
+          <div class="hp-step-desc">Difuminá con los dedos para un resultado natural. Fijá con spray si querés máxima duración.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FAQ ── -->
+  {%- if faq_blocks.size > 0 -%}
+  <div class="hp-section-white">
+    <div class="hp-eyebrow-sm">Preguntas frecuentes</div>
+    <h2 class="hp-h2-sm">Lo que todo el mundo pregunta.</h2>
+    <div class="hp-faq-list">
+      {%- for block in faq_blocks -%}
+      <div class="hp-faq-item" onclick="hpToggleFaq(this)" {{ block.shopify_attributes }}>
+        <div class="hp-faq-q">
+          {{ block.settings.question }}
+          <span class="hp-faq-arrow">▾</span>
+        </div>
+        <div class="hp-faq-a">{{ block.settings.answer }}</div>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- ── Testimonios ── -->
+  {%- if testimonial_blocks.size > 0 -%}
+  <div class="hp-section-light">
+    <div class="hp-eyebrow-sm">Lo que dicen</div>
+    <h2 class="hp-h2">★ 4.9/5 · +1.100 hombres ya lo usan.</h2>
+    <div class="hp-testimonials">
+      {%- for block in testimonial_blocks -%}
+      <div class="hp-testimonial" {{ block.shopify_attributes }}>
+        <div class="hp-testimonial-stars">★★★★★</div>
+        <p class="hp-testimonial-text">"{{ block.settings.quote }}"</p>
+        <span class="hp-testimonial-author">{{ block.settings.author }}</span>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- ── CTA final ── -->
+  <div class="hp-cta">
+    <h2 class="hp-cta-title">Que te veas<br><em>como te sentís.</em></h2>
+    <p class="hp-cta-sub">Sin proceso. Sin compromiso.<br>Resultados desde el primer uso.</p>
+    <div class="hp-cta-price">
+      {%- if on_sale -%}
+        <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
+      {%- endif -%}
+      {{ hp.price | money_without_trailing_zeros }} ARS
+    </div>
+    {%- form 'product', hp, id: 'hp-cta-form' -%}
+      <input type="hidden" name="id" value="{{ cv.id }}">
+      <button type="submit" class="hp-btn-primary" style="font-size:17px;padding:18px 32px;"
+              {%- unless hp.available %} disabled{%- endunless -%}>
+        {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
+      </button>
+    {%- endform -%}
+    <p style="font-size:12px;color:rgba(249,250,248,0.65);margin-top:10px;">
+      3 cuotas sin interés disponibles
+    </p>
+    <div class="hp-trust-row">
+      <div class="hp-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Envío gratis
+      </div>
+      <div class="hp-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Garantía 30 días
+      </div>
+      <div class="hp-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Pago seguro
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="hp-footer">
+    {%- if section.settings.logo != blank -%}
+      <img src="{{ section.settings.logo | image_url: width: 200 }}"
+           alt="{{ shop.name }}" height="22">
+    {%- endif -%}
+    <p>
+      © {{ 'now' | date: '%Y' }} {{ shop.name }} · Grooming masculino argentino<br>
+      <a href="{{ shop.privacy_policy.url }}">Política de privacidad</a> ·
+      <a href="{{ shop.terms_of_service.url }}">Términos y condiciones</a>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  function hpSelectShade(el) {
+    document.querySelectorAll('.hp-shade-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    const variantId = el.dataset.variantId;
+    ['hp-hero-form', 'hp-cta-form'].forEach(function(formId) {
+      const form = document.getElementById(formId);
+      if (form) form.querySelector('[name="id"]').value = variantId;
+    });
+  }
+  function hpToggleFaq(el) {
+    el.classList.toggle('open');
+  }
+</script>
+
+{% schema %}
+{
+  "name": "HairPLUS Landing",
+  "tag": "div",
+  "class": "hairplus-landing-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Producto"
+    },
+    {
+      "type": "text",
+      "id": "product_handle",
+      "label": "Handle del producto",
+      "default": "hairplus-polvo-capilar",
+      "info": "Encontrás el handle en Productos → abrí el producto → URL (sin /products/)"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo versión dark (para fondo claro)"
+    },
+    {
+      "type": "header",
+      "content": "Sección Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow (texto pequeño sobre el título)",
+      "default": "Polvo capilar densificador"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Título (separar líneas con \\n)",
+      "default": "Más pelo.\nAl instante."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Subtítulo",
+      "default": "Disimula entradas, coronilla y zonas con poco pelo. Cubre canas y raíces. Sin proceso, sin compromiso."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Imagen hero (cuadrada, mín. 780×780 px)",
+      "info": "Si se deja vacía, usa la imagen principal del producto"
+    },
+    {
+      "type": "text",
+      "id": "social_proof",
+      "label": "Prueba social (frase junto a las estrellas)",
+      "default": "+1.100 hombres ya lo usan"
+    },
+    {
+      "type": "header",
+      "content": "Sección Producto"
+    },
+    {
+      "type": "image_picker",
+      "id": "features_image",
+      "label": "Imagen de características del producto"
+    },
+    {
+      "type": "header",
+      "content": "Foto Lifestyle"
+    },
+    {
+      "type": "image_picker",
+      "id": "lifestyle_image",
+      "label": "Foto lifestyle (cuadrada)"
+    },
+    {
+      "type": "text",
+      "id": "lifestyle_quote",
+      "label": "Cita sobre la foto (separar líneas con \\n)",
+      "default": "Sin ritual. Sin\ncompromiso."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonio",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Cita del cliente (sin comillas)"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Nombre y ciudad",
+          "placeholder": "Martín G. · Buenos Aires"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Pregunta frecuente",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Pregunta"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Respuesta"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HairPLUS Landing Page",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Me salva para ir a trabajar, tengo muy poco pelo en los costados.",
+            "author": "Martín G. · Buenos Aires"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ya es la tercera vez que lo compro. Es lo mejor para disimular los pequeños huecos de la cabeza.",
+            "author": "Federico R. · Córdoba"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ahora tengo una ex coronilla. Impecable.",
+            "author": "Diego M. · Rosario"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Cumple su función: disimular el crecimiento de las canas y estirar el tiempo de volver a retocar.",
+            "author": "Lucas P. · Mendoza"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "¿Se nota que lo usás?",
+            "answer": "No. El polvo se integra al cabello existente y replica la densidad natural. Resultado indetectable."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "¿Mancha la ropa o se transfiere?",
+            "answer": "Dejalo secar 3-4 minutos después de aplicar. Una vez fijo, no mancha ni se transfiere."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "¿Sale con el agua o el sudor?",
+            "answer": "Resistente al agua y al sudor durante todo el día. Se quita únicamente con shampoo."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto dura el envase?",
+            "answer": "Los 4g rinden mucho más de lo que parecen. Uso diario: entre 2 y 4 meses."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "¿Sirve si tengo mucha pérdida de pelo?",
+            "answer": "Sí. Disimula zonas finas y da densidad visual. Ideal para alopecia leve o pelo fino."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

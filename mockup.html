@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HairPLUS · Shopify Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #111827;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: #0F172A;
+    border-bottom: 1px solid #1E293B;
+    padding: 0 24px;
+    height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+    position: sticky; top: 0; z-index: 200;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; }
+  .topbar-label {
+    font-size: 12px; font-weight: 600; color: #F1F5F9;
+    letter-spacing: 0.04em;
+  }
+  .topbar-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #64748B;
+    background: #1E293B; padding: 3px 10px; border-radius: 4px;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 999px; letter-spacing: 0.03em;
+  }
+  .badge-os20 { background: rgba(99,102,241,0.15); color: #A5B4FC; border: 1px solid rgba(99,102,241,0.3); }
+  .badge-section { background: rgba(16,185,129,0.15); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.3); }
+
+  /* ── Layout ── */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar (schema panel) ── */
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #0F172A;
+    border-right: 1px solid #1E293B;
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+  .sidebar-section { padding: 0 16px 16px; border-bottom: 1px solid #1E293B; margin-bottom: 4px; }
+  .sidebar-section:last-child { border-bottom: none; }
+  .sidebar-header {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #475569; margin-bottom: 10px;
+    padding: 8px 0 4px;
+  }
+  .sidebar-setting {
+    display: flex; flex-direction: column; gap: 3px;
+    margin-bottom: 10px;
+  }
+  .sidebar-label { font-size: 11px; color: #64748B; }
+  .sidebar-value {
+    font-size: 12px; color: #CBD5E1; font-weight: 500;
+    background: #1E293B; border-radius: 6px; padding: 6px 10px;
+    line-height: 1.4;
+  }
+  .sidebar-value.mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7DD3FC;
+  }
+  .sidebar-block {
+    background: #1E293B; border-radius: 8px; padding: 8px 10px;
+    margin-bottom: 6px;
+  }
+  .sidebar-block-type { font-size: 9px; font-weight: 700; color: #6366F1; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .sidebar-block-val { font-size: 11px; color: #94A3B8; line-height: 1.4; }
+
+  /* ── Phone frame ── */
+  .phone-area {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 24px;
+    overflow-y: auto;
+  }
+  .phone-frame {
+    width: 390px;
+    flex-shrink: 0;
+    background: #000;
+    border-radius: 44px;
+    padding: 14px;
+    box-shadow:
+      0 0 0 1px #374151,
+      0 40px 80px rgba(0,0,0,0.6),
+      inset 0 0 0 1px #1F2937;
+    position: relative;
+  }
+  .phone-notch {
+    width: 120px; height: 30px;
+    background: #000; border-radius: 0 0 18px 18px;
+    margin: 0 auto 0;
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    z-index: 10;
+  }
+  .phone-screen {
+    border-radius: 32px;
+    overflow: hidden;
+    background: #F9FAF8;
+    position: relative;
+  }
+
+  /* ── Liquid annotation badges ── */
+  .lq-wrap { position: relative; }
+  .lq-badge {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #6366F1;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.4);
+  }
+  .lq-badge::before {
+    content: '';
+    position: absolute;
+    right: 100%; top: 50%;
+    transform: translateY(-50%);
+    border: 4px solid transparent;
+    border-right-color: #6366F1;
+  }
+  .lq-outline {
+    outline: 1.5px dashed rgba(99,102,241,0.35);
+    outline-offset: 2px;
+  }
+
+  /* ── Page content (scoped) ── */
+  .hp-wrap *, .hp-wrap *::before, .hp-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .hp-wrap {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #F9FAF8; color: #0A2633;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hp-nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: #F9FAF8; border-bottom: 1px solid #E8E4D6;
+  }
+  .hp-nav img { height: 22px; }
+  .hp-nav-cta {
+    background: #0A2633; color: #F9FAF8; font-weight: 600; font-size: 12px;
+    padding: 8px 16px; border-radius: 999px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block;
+  }
+  .hp-hero {
+    background: #0A2633; padding: 36px 20px 32px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .hp-eyebrow {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #B8AA88;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hp-eyebrow::before { content:''; display:block; width:16px; height:1px; background:#B8AA88; }
+  .hp-hero h1 { font-weight:700; font-size:2.25rem; line-height:1.05; letter-spacing:-0.025em; color:#F9FAF8; }
+  .hp-hero h1 em { color:#B8AA88; font-style:normal; }
+  .hp-hero-sub { font-size:13px; line-height:1.6; color:rgba(249,250,248,0.85); }
+  .hp-hero-img { width:100%; border-radius:12px; overflow:hidden; aspect-ratio:1/1; background:#0d2e3e; }
+  .hp-hero-img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .hp-price-display { font-weight:700; font-size:1rem; color:#F9FAF8; display:flex; align-items:center; gap:8px; }
+  .hp-price-display s { font-weight:400; color:rgba(249,250,248,0.55); font-size:0.8rem; }
+  .hp-btn-primary {
+    display:block; width:100%; text-align:center;
+    background:#B8AA88; color:#0A2633; font-weight:700; font-size:14px;
+    padding:15px 28px; border-radius:999px; border:none; cursor:pointer;
+    text-decoration:none;
+  }
+  .hp-btn-ghost {
+    display:block; width:100%; text-align:center;
+    background:transparent; color:#F9FAF8; font-weight:500; font-size:13px;
+    border:1.5px solid rgba(249,250,248,0.22); border-radius:999px;
+    padding:12px 28px; cursor:pointer; text-decoration:none;
+  }
+  .hp-trust { display:flex; align-items:center; gap:8px; font-size:11px; color:rgba(249,250,248,0.75); }
+  .hp-stars { color:#B8AA88; }
+  .hp-proof {
+    background:#E8E4D6; padding:14px 16px;
+    display:flex; justify-content:space-around; align-items:center;
+  }
+  .hp-proof-item { display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .hp-proof-num { font-weight:700; font-size:20px; color:#0A2633; letter-spacing:-0.02em; }
+  .hp-proof-label { font-size:9px; font-weight:500; color:#62717D; letter-spacing:0.07em; text-transform:uppercase; }
+  .hp-proof-sep { width:1px; height:28px; background:#B8AA88; opacity:0.4; }
+  .hp-section { padding:36px 20px; }
+  .hp-section-white { padding:32px 20px; background:#fff; }
+  .hp-section-light { padding:36px 20px; background:#F9FAF8; }
+  .hp-eyebrow-sm { font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#B8AA88; margin-bottom:8px; }
+  .hp-h2    { font-weight:700; font-size:1.5rem; line-height:1.15; letter-spacing:-0.02em; margin-bottom:10px; color:#0A2633; }
+  .hp-h2-sm { font-weight:700; font-size:1.25rem; line-height:1.15; letter-spacing:-0.02em; margin-bottom:10px; color:#0A2633; }
+  .hp-shade-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .hp-shade-btn {
+    display:flex; align-items:center; gap:6px;
+    padding:8px 14px; border-radius:999px; border:1.5px solid #E8E4D6;
+    background:#fff; cursor:pointer; font-size:12px; font-weight:500; color:#0A2633;
+  }
+  .hp-shade-btn.active { border-color:#0A2633; background:#0A2633; color:#F9FAF8; }
+  .hp-shade-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .hp-features-img { width:100%; border-radius:12px; overflow:hidden; margin-bottom:18px; }
+  .hp-features-img img { width:100%; display:block; }
+  .hp-features-list { display:flex; flex-direction:column; gap:10px; }
+  .hp-feature {
+    display:flex; align-items:flex-start; gap:12px;
+    padding:14px; background:#fff; border-radius:10px;
+    box-shadow:0 2px 10px rgba(10,38,51,0.07);
+  }
+  .hp-feature-icon {
+    width:36px; height:36px; border-radius:8px;
+    background:#E8E4D6; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; color:#0A2633;
+  }
+  .hp-feature-title { font-weight:600; font-size:13px; margin-bottom:2px; color:#0A2633; }
+  .hp-feature-desc  { font-size:12px; line-height:1.5; color:#62717D; }
+  .hp-lifestyle { width:100%; aspect-ratio:1/1; overflow:hidden; position:relative; }
+  .hp-lifestyle img { width:100%; height:100%; object-fit:cover; display:block; }
+  .hp-lifestyle-overlay {
+    position:absolute; bottom:0; left:0; right:0; padding:22px 20px;
+    background:linear-gradient(to top, rgba(10,38,51,0.82) 0%, transparent 100%);
+  }
+  .hp-lifestyle-quote { font-weight:700; font-size:1.2rem; color:#F9FAF8; line-height:1.2; letter-spacing:-0.02em; }
+  .hp-lifestyle-quote em { color:#B8AA88; font-style:normal; }
+  .hp-steps { display:flex; flex-direction:column; }
+  .hp-step { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid #E8E4D6; }
+  .hp-step:last-child { border-bottom:none; }
+  .hp-step-num   { font-weight:700; font-size:1.75rem; color:#B8AA88; line-height:1; flex-shrink:0; width:28px; }
+  .hp-step-title { font-weight:600; font-size:14px; margin-bottom:3px; color:#0A2633; }
+  .hp-step-desc  { font-size:12px; color:#62717D; line-height:1.5; }
+  .hp-faq-list { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .hp-faq-item { padding:14px; border-radius:10px; border:1px solid #E8E4D6; cursor:pointer; }
+  .hp-faq-q { font-weight:600; font-size:13px; color:#0A2633; display:flex; justify-content:space-between; align-items:center; }
+  .hp-faq-a { font-size:12px; line-height:1.6; color:#62717D; margin-top:6px; display:none; }
+  .hp-faq-item.open .hp-faq-a { display:block; }
+  .hp-faq-arrow { transition:transform 200ms; font-size:11px; }
+  .hp-faq-item.open .hp-faq-arrow { transform:rotate(180deg); }
+  .hp-testimonials { display:flex; flex-direction:column; gap:10px; }
+  .hp-testimonial { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 10px rgba(10,38,51,0.07); }
+  .hp-testimonial-stars  { color:#B8AA88; font-size:12px; margin-bottom:6px; }
+  .hp-testimonial-text   { font-size:13px; line-height:1.6; color:#0A2633; font-style:italic; margin-bottom:8px; }
+  .hp-testimonial-author { font-size:10px; font-weight:600; color:#62717D; letter-spacing:0.05em; text-transform:uppercase; }
+  .hp-cta { background:#0A2633; padding:44px 20px; text-align:center; }
+  .hp-cta-title { font-weight:700; font-size:1.875rem; color:#F9FAF8; letter-spacing:-0.025em; line-height:1.1; margin-bottom:8px; }
+  .hp-cta-title em { color:#B8AA88; font-style:normal; }
+  .hp-cta-sub   { font-size:14px; color:rgba(249,250,248,0.80); margin-bottom:6px; line-height:1.6; }
+  .hp-cta-price { font-weight:700; font-size:1.375rem; color:#F9FAF8; margin-bottom:20px; }
+  .hp-cta-price s { font-weight:400; color:rgba(249,250,248,0.55); font-size:0.9rem; margin-right:5px; }
+  .hp-trust-row { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:14px; }
+  .hp-trust-item { display:flex; align-items:center; gap:4px; font-size:11px; color:rgba(249,250,248,0.70); font-weight:500; }
+  .hp-footer { padding:22px 20px; border-top:1px solid #E8E4D6; text-align:center; }
+  .hp-footer img { height:18px; opacity:0.45; margin-bottom:10px; display:block; margin-left:auto; margin-right:auto; }
+  .hp-footer p { font-size:10px; color:#62717D; line-height:1.6; }
+  .hp-footer a { color:#62717D; }
+
+  /* ── Right panel (legend) ── */
+  .legend {
+    width: 200px; flex-shrink: 0;
+    background: #0F172A; border-left: 1px solid #1E293B;
+    padding: 20px 16px; overflow-y: auto;
+  }
+  .legend-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #475569; margin-bottom: 16px; }
+  .legend-item { margin-bottom: 14px; }
+  .legend-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #6366F1; color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 500;
+    padding: 2px 7px; border-radius: 4px; margin-bottom: 5px;
+  }
+  .legend-desc { font-size: 11px; color: #64748B; line-height: 1.5; }
+  .legend-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: #7DD3FC;
+    background: #1E293B; border-radius: 4px;
+    padding: 4px 8px; margin-top: 4px; display: block;
+    line-height: 1.5; word-break: break-all;
+  }
+  .legend-sep { border: none; border-top: 1px solid #1E293B; margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-dot"></div>
+    <span class="topbar-label">HairPLUS · Shopify Liquid Mockup</span>
+    <span class="topbar-file">sections/hairplus-landing.liquid</span>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-os20">Online Store 2.0</span>
+    <span class="badge badge-section">Section + Schema</span>
+  </div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar: schema settings -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-header">Producto</div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Handle</span>
+        <span class="sidebar-value mono">hairplus-polvo-capilar</span>
+      </div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Precio</span>
+        <span class="sidebar-value">$39.990 ARS</span>
+      </div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Precio comparado</span>
+        <span class="sidebar-value">$49.990 ARS</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">Hero</div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Eyebrow</span>
+        <span class="sidebar-value">Polvo capilar densificador</span>
+      </div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Título</span>
+        <span class="sidebar-value">Más pelo. Al instante.</span>
+      </div>
+      <div class="sidebar-setting">
+        <span class="sidebar-label">Prueba social</span>
+        <span class="sidebar-value">+1.100 hombres ya lo usan</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">Bloques (9)</div>
+      <div class="sidebar-block">
+        <div class="sidebar-block-type">✦ testimonial ×4</div>
+        <div class="sidebar-block-val">Martín G., Federico R., Diego M., Lucas P.</div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-block-type">✦ faq ×5</div>
+        <div class="sidebar-block-val">¿Se nota? ¿Mancha? ¿Agua? ¿Dura? ¿Alopecia?</div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">Variantes</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:#1a1a1a;flex-shrink:0;"></div>
+          <span class="sidebar-label" style="color:#CBD5E1;">Negro</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:#6B3F2A;flex-shrink:0;"></div>
+          <span class="sidebar-label" style="color:#CBD5E1;">Castaño</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:#C49A5A;flex-shrink:0;"></div>
+          <span class="sidebar-label" style="color:#CBD5E1;">Rubio</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:#8E9DAF;flex-shrink:0;"></div>
+          <span class="sidebar-label" style="color:#CBD5E1;">Gris</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone frame -->
+  <div class="phone-area">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="hp-wrap">
+
+          <!-- Nav -->
+          <nav class="hp-nav lq-wrap">
+            <img src="../../assets/logo-horizontal-dark.png" alt="HairPLUS">
+            <a href="#" class="hp-nav-cta">Comprar</a>
+            <span class="lq-badge">section.settings.logo</span>
+          </nav>
+
+          <!-- Hero -->
+          <section class="hp-hero">
+            <div class="hp-eyebrow">Polvo capilar densificador</div>
+            <h1>Más pelo.<br><em>Al instante.</em></h1>
+            <p class="hp-hero-sub">Disimula entradas, coronilla y zonas con poco pelo. Cubre canas y raíces. Sin proceso, sin compromiso.</p>
+            <div class="hp-hero-img lq-wrap lq-outline">
+              <img src="../../assets/foto-modelo.png" alt="Hombre usando HairPLUS">
+              <span class="lq-badge">section.settings.hero_image</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="hp-price-display lq-wrap lq-outline">
+                <s>$49.990</s>$39.990 ARS
+                <span class="lq-badge">hp.price | money</span>
+              </div>
+              <button class="hp-btn-primary">Comprar ahora</button>
+              <a href="#" class="hp-btn-ghost">Ver cómo funciona</a>
+            </div>
+            <div class="hp-trust">
+              <span class="hp-stars">★ 4.9/5</span>
+              <span>+1.100 hombres ya lo usan</span>
+            </div>
+          </section>
+
+          <!-- Proof bar -->
+          <div class="hp-proof">
+            <div class="hp-proof-item"><span class="hp-proof-num">30s</span><span class="hp-proof-label">aplicación</span></div>
+            <div class="hp-proof-sep"></div>
+            <div class="hp-proof-item"><span class="hp-proof-num">4.9</span><span class="hp-proof-label">puntuación</span></div>
+            <div class="hp-proof-sep"></div>
+            <div class="hp-proof-item"><span class="hp-proof-num">0%</span><span class="hp-proof-label">proceso</span></div>
+            <div class="hp-proof-sep"></div>
+            <div class="hp-proof-item"><span class="hp-proof-num">4g</span><span class="hp-proof-label">contenido</span></div>
+          </div>
+
+          <!-- Shades -->
+          <div class="hp-section-white">
+            <div class="hp-eyebrow-sm">Elegí tu color</div>
+            <h2 class="hp-h2-sm">4 tonos para un resultado indetectable.</h2>
+            <div class="hp-shade-grid lq-wrap lq-outline">
+              <button class="hp-shade-btn active"><span class="hp-shade-dot" style="background:#1a1a1a;"></span>Negro</button>
+              <button class="hp-shade-btn"><span class="hp-shade-dot" style="background:#6B3F2A;"></span>Castaño</button>
+              <button class="hp-shade-btn"><span class="hp-shade-dot" style="background:#C49A5A;"></span>Rubio</button>
+              <button class="hp-shade-btn"><span class="hp-shade-dot" style="background:#8E9DAF;"></span>Gris</button>
+              <span class="lq-badge" style="top:0;transform:none;">for variant in hp.variants</span>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="hp-section" style="padding-top:28px;">
+            <div class="hp-eyebrow-sm">El producto</div>
+            <h2 class="hp-h2">Todo lo que necesitás, en un estuche.</h2>
+            <div class="hp-features-img lq-wrap lq-outline">
+              <img src="../../assets/producto-muestra.png" alt="HairPLUS características">
+              <span class="lq-badge">section.settings.features_image</span>
+            </div>
+            <div class="hp-features-list">
+              <div class="hp-feature">
+                <div class="hp-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <div><div class="hp-feature-title">Cobertura al instante</div><div class="hp-feature-desc">30 segundos. Resultado natural, indetectable.</div></div>
+              </div>
+              <div class="hp-feature">
+                <div class="hp-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div><div class="hp-feature-title">Resistente al agua y sudor</div><div class="hp-feature-desc">Aguanta todo el día. Sale solo con shampoo.</div></div>
+              </div>
+              <div class="hp-feature">
+                <div class="hp-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><circle cx="11" cy="11" r="3"/></svg></div>
+                <div><div class="hp-feature-title">Espejo incorporado</div><div class="hp-feature-desc">Estuche compacto, entra en cualquier bolsillo.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lifestyle -->
+          <div class="hp-lifestyle lq-wrap lq-outline">
+            <img src="../../assets/foto-baño.png" alt="HairPLUS en el baño">
+            <div class="hp-lifestyle-overlay">
+              <div class="hp-lifestyle-quote">Sin ritual. Sin<br><em>compromiso.</em></div>
+            </div>
+            <span class="lq-badge" style="top:12px;transform:none;">section.settings.lifestyle_image</span>
+          </div>
+
+          <!-- Steps -->
+          <div class="hp-section">
+            <div class="hp-eyebrow-sm">Modo de uso</div>
+            <h2 class="hp-h2">Tres pasos. 30 segundos.</h2>
+            <div class="hp-steps">
+              <div class="hp-step"><span class="hp-step-num">01</span><div><div class="hp-step-title">Pelo seco</div><div class="hp-step-desc">Siempre sobre pelo seco para mejor adherencia.</div></div></div>
+              <div class="hp-step"><span class="hp-step-num">02</span><div><div class="hp-step-title">Cargá el cepillo</div><div class="hp-step-desc">Girá el estuche y aplicá en zonas con poco pelo.</div></div></div>
+              <div class="hp-step"><span class="hp-step-num">03</span><div><div class="hp-step-title">Listo</div><div class="hp-step-desc">Difuminá con los dedos. Opcional: fijar con spray.</div></div></div>
+            </div>
+          </div>
+
+          <!-- FAQ -->
+          <div class="hp-section-white">
+            <div class="hp-eyebrow-sm">Preguntas frecuentes</div>
+            <h2 class="hp-h2-sm">Lo que todo el mundo pregunta.</h2>
+            <div class="hp-faq-list lq-wrap lq-outline">
+              <div class="hp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="hp-faq-q">¿Se nota que lo usás? <span class="hp-faq-arrow">▾</span></div>
+                <div class="hp-faq-a">No. El polvo se integra al cabello existente. Resultado indetectable.</div>
+              </div>
+              <div class="hp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="hp-faq-q">¿Mancha la ropa? <span class="hp-faq-arrow">▾</span></div>
+                <div class="hp-faq-a">Dejalo secar 3-4 minutos. Una vez fijo, no mancha ni se transfiere.</div>
+              </div>
+              <div class="hp-faq-item" onclick="this.classList.toggle('open')">
+                <div class="hp-faq-q">¿Sale con agua o sudor? <span class="hp-faq-arrow">▾</span></div>
+                <div class="hp-faq-a">Resistente al agua y sudor. Sale únicamente con shampoo.</div>
+              </div>
+              <span class="lq-badge" style="top:8px;transform:none;">for block in faq_blocks</span>
+            </div>
+          </div>
+
+          <!-- Testimonials -->
+          <div class="hp-section-light">
+            <div class="hp-eyebrow-sm">Lo que dicen</div>
+            <h2 class="hp-h2">★ 4.9/5 · +1.100 hombres ya lo usan.</h2>
+            <div class="hp-testimonials lq-wrap lq-outline">
+              <div class="hp-testimonial"><div class="hp-testimonial-stars">★★★★★</div><p class="hp-testimonial-text">"Me salva para ir a trabajar, tengo muy poco pelo en los costados."</p><span class="hp-testimonial-author">Martín G. · Buenos Aires</span></div>
+              <div class="hp-testimonial"><div class="hp-testimonial-stars">★★★★★</div><p class="hp-testimonial-text">"Ya es la tercera vez que lo compro. Impecable."</p><span class="hp-testimonial-author">Federico R. · Córdoba</span></div>
+              <span class="lq-badge" style="top:8px;transform:none;">for block in testimonial_blocks</span>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="hp-cta">
+            <h2 class="hp-cta-title">Que te veas<br><em>como te sentís.</em></h2>
+            <p class="hp-cta-sub">Sin proceso. Sin compromiso.<br>Resultados desde el primer uso.</p>
+            <div class="hp-cta-price lq-wrap lq-outline">
+              <s>$49.990</s> $39.990 ARS
+              <span class="lq-badge">hp.price | money</span>
+            </div>
+            <button class="hp-btn-primary" style="font-size:15px;padding:16px 28px;margin-top:16px;">Comprar ahora</button>
+            <p style="font-size:11px;color:rgba(249,250,248,0.65);margin-top:8px;">3 cuotas sin interés disponibles</p>
+            <div class="hp-trust-row">
+              <div class="hp-trust-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Envío gratis</div>
+              <div class="hp-trust-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Garantía 30 días</div>
+              <div class="hp-trust-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Pago seguro</div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <footer class="hp-footer">
+            <img src="../../assets/logo-horizontal-dark.png" alt="HairPLUS">
+            <p>© 2026 HairPLUS · Grooming masculino argentino<br>
+            <a href="#">Política de privacidad</a> · <a href="#">Términos</a></p>
+          </footer>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">Zonas Liquid</div>
+
+    <div class="legend-item">
+      <div class="legend-badge">logo</div>
+      <div class="legend-desc">Logo desde el editor de temas</div>
+      <code class="legend-code">section.settings.logo | image_url</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">hero image</div>
+      <div class="legend-desc">Imagen hero o fallback a imagen del producto</div>
+      <code class="legend-code">section.settings.hero_image ?? hp.featured_image</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">price</div>
+      <div class="legend-desc">Precio real del producto en Shopify</div>
+      <code class="legend-code">hp.price | money_without_trailing_zeros</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">variants</div>
+      <div class="legend-desc">Selector de color desde variantes del producto</div>
+      <code class="legend-code">for variant in hp.variants</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">features_image</div>
+      <div class="legend-desc">Imagen de características desde el editor</div>
+      <code class="legend-code">section.settings.features_image</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">lifestyle</div>
+      <div class="legend-desc">Foto lifestyle desde el editor</div>
+      <code class="legend-code">section.settings.lifestyle_image</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">faq blocks</div>
+      <div class="legend-desc">Preguntas editables en el editor de temas</div>
+      <code class="legend-code">for block in faq_blocks</code>
+    </div>
+    <hr class="legend-sep">
+    <div class="legend-item">
+      <div class="legend-badge">testimonials</div>
+      <div class="legend-desc">Reseñas editables como bloques</div>
+      <code class="legend-code">for block in testimonial_blocks</code>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
