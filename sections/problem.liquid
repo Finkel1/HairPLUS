@@ -1,0 +1,49 @@
+<section class="section section--white">
+  <div class="container-x">
+    <div class="section-header">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+    <div class="grid-3 mt-10">
+      {%- for block in section.blocks -%}
+        <article class="card" {{ block.shopify_attributes }}>
+          <div class="card-number">0{{ forloop.index }}</div>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Problema",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "El problema" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "La calvicie no avisa cuando te conviene." },
+    { "type": "textarea", "id": "description", "label": "Descripción", "default": "Pasa siempre en el peor momento. HairPLUS está pensado para esas veces en las que necesitás verte bien sin complicarte." }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Antes de una reunión" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Te mirás al espejo y las raíces te delatan justo cuando más segura querés sentirte." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Problema",
+      "blocks": [
+        { "type": "card", "settings": { "title": "Antes de una reunión", "text": "Te mirás al espejo y las entradas te delatan justo cuando más seguro querés sentirte." } },
+        { "type": "card", "settings": { "title": "Antes de una salida", "text": "Tenés un evento hoy y no querés que la coronilla sea lo primero que se note." } },
+        { "type": "card", "settings": { "title": "Entre corte y corte", "text": "Pasan semanas y las zonas finas se notan más. No querés volver a la barbería tan pronto." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

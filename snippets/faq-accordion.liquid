@@ -1,0 +1,12 @@
+<div class="faq" data-faq>
+  {%- for block in blocks -%}
+    <div class="faq__item{% if forloop.first %} is-open{% endif %}" data-faq-item {{ block.shopify_attributes }}>
+      <button type="button" class="faq__trigger" data-faq-trigger aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+        <span>{{ block.settings.question }}</span>
+        <span class="faq__icon-plus">{% render 'icon', name: 'plus', class: 'icon' %}</span>
+        <span class="faq__icon-minus">{% render 'icon', name: 'minus', class: 'icon' %}</span>
+      </button>
+      <div class="faq__answer">{{ block.settings.answer }}</div>
+    </div>
+  {%- endfor -%}
+</div>

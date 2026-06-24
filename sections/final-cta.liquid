@@ -1,0 +1,30 @@
+<section class="section section--pink final-cta">
+  <div class="container-x">
+    <h2>
+      {{ section.settings.heading_line_1 }}<br>
+      <em>{{ section.settings.heading_emphasis }}</em>
+    </h2>
+    <p>{{ section.settings.description }}</p>
+    {%- if section.settings.button_label != blank -%}
+      {%- capture product_page_url -%}{%- render 'product-cta-url' -%}{%- endcapture -%}
+      {%- assign product_page_url = product_page_url | strip -%}
+      <a href="{{ product_page_url }}" class="btn-dark">
+        {{ section.settings.button_label }}
+        {% render 'icon', name: 'arrow-right', class: 'icon icon--sm' %}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTA final",
+  "settings": [
+    { "type": "text", "id": "heading_line_1", "label": "Título", "default": "Que te veas como te sentís." },
+    { "type": "text", "id": "heading_emphasis", "label": "Título énfasis", "default": "Sin compromiso." },
+    { "type": "textarea", "id": "description", "label": "Descripción", "default": "Disimula entradas, coronilla y zonas finas en 30 segundos. Resultados desde el primer uso." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Comprar ahora" }
+  ],
+  "presets": [{ "name": "CTA final" }]
+}
+{% endschema %}

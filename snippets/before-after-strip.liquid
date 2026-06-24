@@ -1,0 +1,26 @@
+{%- liquid
+  assign strip_src = nil
+  if strip_image != blank
+    assign strip_src = strip_image | image_url: width: 1200
+  elsif fallback_strip != blank
+    assign strip_src = fallback_strip | asset_url
+  endif
+-%}
+{%- if strip_src -%}
+  <div class="before-after-strip" role="img" aria-label="{{ alt | default: 'Antes y después HairPLUS' | escape }}">
+    <img
+      class="before-after-strip__img"
+      src="{{ strip_src }}"
+      alt="{{ alt | default: 'Antes y después HairPLUS' | escape }}"
+      loading="lazy"
+      width="1200"
+      height="600"
+      draggable="false"
+    >
+    <span class="before-after-strip__label before-after-strip__label--before">Antes</span>
+    <span class="before-after-strip__arrow" aria-hidden="true">
+      {% render 'icon', name: 'arrow-right', class: 'icon' %}
+    </span>
+    <span class="before-after-strip__label before-after-strip__label--after">Después</span>
+  </div>
+{%- endif -%}

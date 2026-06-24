@@ -1,0 +1,156 @@
+{%- assign bundle_handle = settings.product_handle | default: 'polvo-capilar-rellenador' -%}
+{%- assign bundle_product = all_products[bundle_handle] -%}
+
+{%- assign color_option = nil -%}
+{%- assign color_option_index = 0 -%}
+{%- if bundle_product != blank -%}
+  {%- for option in bundle_product.options_with_values -%}
+    {%- assign opt_name = option.name | downcase -%}
+    {%- if opt_name contains 'color' or opt_name contains 'tono' or opt_name contains 'colour' -%}
+      {%- assign color_option = option -%}
+      {%- assign color_option_index = forloop.index0 -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- assign bundle_count = 0 -%}
+{%- for item in cart.items -%}
+  {%- if item.product.handle == bundle_handle -%}
+    {%- assign bundle_count = bundle_count | plus: item.quantity -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- capture bundle_total_amount_str -%}{%- render 'bundle-cyclic-price', mode: 'cart_total', count: bundle_count -%}{%- endcapture -%}
+{%- assign bundle_total_amount = bundle_total_amount_str | strip | plus: 0 -%}
+{%- assign bundle_compare_amount = 0 -%}
+{%- if bundle_count > 1 -%}
+  {%- capture bundle_compare_amount_str -%}{%- render 'bundle-cyclic-price', mode: 'compare_total', count: bundle_count -%}{%- endcapture -%}
+  {%- assign bundle_compare_amount = bundle_compare_amount_str | strip | plus: 0 -%}
+{%- elsif bundle_count == 1 -%}
+  {%- assign bundle_compare_amount = 59899 -%}
+{%- endif -%}
+{%- assign only_bundle_cart = true -%}
+{%- for item in cart.items -%}
+  {%- if item.product.handle != bundle_handle -%}
+    {%- assign only_bundle_cart = false -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- capture bundle_total_price -%}{%- render 'format-ars-money', amount: bundle_total_amount -%}{%- endcapture -%}
+
+{%- if cart.item_count == 0 -%}
+  <div class="cart-bundle cart-bundle--empty" data-cart-bundle data-empty="true">
+    <p class="text-muted cart-bundle__empty">Tu carrito está vacío.</p>
+    <a href="{% render 'product-cta-url' %}" class="btn-primary cart-bundle__empty-cta" data-cart-drawer-close>Ver producto</a>
+  </div>
+{%- else -%}
+  <div
+    class="cart-bundle"
+    data-cart-bundle
+    data-product-handle="{{ bundle_handle }}"
+    data-color-option-index="{{ color_option_index }}"
+    data-bundle-count="{{ bundle_count }}"
+  >
+    <div class="cart-bundle__lines">
+      <div class="cart-bundle__table-wrap">
+        <table class="cart-bundle__table">
+          <tbody data-cart-bundle-lines>
+            {%- assign variant_ids_order = '' -%}
+            {%- for item in cart.items -%}
+              {%- if item.product.handle == bundle_handle -%}
+                {%- assign vid_key = item.variant_id | append: '|' -%}
+                {%- unless variant_ids_order contains vid_key -%}
+                  {%- assign variant_ids_order = variant_ids_order | append: vid_key -%}
+                {%- endunless -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- assign variant_id_list = variant_ids_order | split: '|' -%}
+            {%- for vid_part in variant_id_list -%}
+              {%- if vid_part != blank -%}
+                {%- assign group_variant_id = vid_part | plus: 0 -%}
+                {%- assign group_qty = 0 -%}
+                {%- assign group_item = nil -%}
+                {%- for item in cart.items -%}
+                  {%- if item.product.handle == bundle_handle and item.variant_id == group_variant_id -%}
+                    {%- if group_qty == 0 -%}
+                      {%- assign group_item = item -%}
+                    {%- endif -%}
+                    {%- assign group_qty = group_qty | plus: item.quantity -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- capture row_total_str -%}{%- render 'bundle-variant-row-total', variant_id: group_variant_id, bundle_handle: bundle_handle -%}{%- endcapture -%}
+                {%- assign row_total = row_total_str | strip | plus: 0 -%}
+                {% render 'cart-bundle-line',
+                  item: group_item,
+                  is_bundle_product: true,
+                  line_qty: group_qty,
+                  variant_id: group_variant_id,
+                  row_total: row_total
+                %}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- for item in cart.items -%}
+              {%- if item.product.handle != bundle_handle -%}
+                {% render 'cart-bundle-line',
+                  item: item,
+                  line_index: forloop.index,
+                  is_bundle_product: false
+                %}
+              {%- endif -%}
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="cart-bundle__checkout-bar" aria-label="Resumen del carrito">
+      <div class="cart-bundle__checkout-inner">
+        <details class="cart-bundle__discount">
+          <summary class="cart-bundle__discount-row">
+            <span>Descuento</span>
+            <span class="cart-bundle__discount-toggle" aria-hidden="true">+</span>
+          </summary>
+          <p class="cart-bundle__discount-note">Podés aplicar tu código en la página de pago.</p>
+        </details>
+
+        <div class="cart-bundle__estimated-total">
+          <span class="cart-bundle__estimated-label">Total estimado</span>
+          <div class="cart-bundle__estimated-prices">
+            <span class="cart-bundle__grand-amount" data-cart-bundle-total>
+              {%- if only_bundle_cart and bundle_count > 0 -%}
+                {{ bundle_total_price }}
+              {%- else -%}
+                {{ cart.total_price | money }}
+              {%- endif -%}
+            </span>
+            {%- if bundle_compare_amount > 0 -%}
+              <span class="cart-bundle__compare-total" data-cart-compare-total>{%- render 'format-ars-money', amount: bundle_compare_amount -%}</span>
+            {%- else -%}
+              <span class="cart-bundle__compare-total" data-cart-compare-total hidden></span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <button type="button" class="btn-dark cart-bundle__checkout-btn" data-cart-checkout>
+          Finalizar compra
+        </button>
+
+        <ul class="cart-bundle__perks cart-bundle__perks--checkout" role="note">
+          <li class="cart-bundle__perk">
+            {% render 'icon', name: 'shield-check', class: 'icon icon--sm icon--pink' %}
+            <span>3 Cuotas sin interés</span>
+          </li>
+          <li class="cart-bundle__perk">
+            {% render 'icon', name: 'truck', class: 'icon icon--sm icon--pink' %}
+            <span>Envío gratis</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  {%- if bundle_product != blank -%}
+    <script type="application/json" data-bundle-variants-json>{{ bundle_product.variants | json }}</script>
+  {%- endif -%}
+  <script type="application/json" data-bundle-pricing-json>{% render 'bundle-pricing-data' %}</script>
+  <script type="application/json" data-cart-json>{{ cart | json }}</script>
+{%- endif -%}

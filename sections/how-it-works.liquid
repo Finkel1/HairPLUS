@@ -1,0 +1,64 @@
+<section class="section section--pink how-it-works">
+  <div class="container-x">
+    <div class="how-grid">
+      <div>
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2 class="how-grid__title">
+          {{ section.settings.heading -}}
+          {%- if section.settings.heading_emphasis != blank %} <em>{{ section.settings.heading_emphasis }}</em>{% endif -%}
+        </h2>
+        <ol class="how-steps">
+          {%- for block in section.blocks -%}
+            <li class="how-step" {{ block.shopify_attributes }}>
+              <span class="how-step__num">{{ block.settings.number }}</span>
+              <div>
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+      <div class="rounded-media" style="aspect-ratio:4/5">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.image.alt }}
+        {%- else -%}
+          <img src="{{ 'aplicar.jpg' | asset_url }}" alt="Aplicación HairPLUS" loading="lazy" width="800" height="1000">
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Modo de uso",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Modo de uso" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Aplicá en 3 pasos." },
+    { "type": "text", "id": "heading_emphasis", "label": "Título énfasis", "default": "Y listo." },
+    { "type": "image_picker", "id": "image", "label": "Imagen" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Número", "default": "01" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Elegí tu tono" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Negro, castaño oscuro, castaño claro, rubio, rubio claro, gris oscuro y gris." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modo de uso",
+      "blocks": [
+        { "type": "step", "settings": { "number": "01", "title": "Elegí tu tono", "text": "Negro, castaño oscuro, castaño claro, rubio, rubio claro, gris oscuro y gris." } },
+        { "type": "step", "settings": { "number": "02", "title": "Aplicá el polvo", "text": "Con la esponja, directo sobre canas, entradas o raíces." } },
+        { "type": "step", "settings": { "number": "03", "title": "Difuminá y seguí con tu día", "text": "Listo en menos de 2 minutos." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

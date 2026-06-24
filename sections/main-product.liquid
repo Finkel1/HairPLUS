@@ -1,0 +1,192 @@
+{%- if product == blank -%}
+  <section class="section section--cream">
+    <div class="container-x">
+      <p>Seleccioná un producto en la configuración de la sección.</p>
+    </div>
+  </section>
+{%- else -%}
+
+<section class="product-hero bg-background">
+  <div class="container-x">
+    <div class="product-grid">
+      <div data-product-gallery>
+        <div class="product-gallery__main" data-gallery-main>
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <div
+                class="product-gallery__slide{% unless forloop.first %} hidden{% endunless %}"
+                data-gallery-slide
+                data-gallery-index="{{ forloop.index0 }}"
+              >
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}
+                    {{ media | image_url: width: 1200 | image_tag: alt: media.alt, loading: 'lazy', sizes: '(max-width: 767px) 100vw, 50vw' }}
+                  {%- when 'video', 'external_video' -%}
+                    {{ media | media_tag: image_size: '1200x', controls: true, preload: 'metadata' }}
+                  {%- else -%}
+                    {{ media | media_tag: image_size: '1200x' }}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          {%- elsif product.featured_image -%}
+            <div class="product-gallery__slide" data-gallery-slide data-gallery-index="0">
+              <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape }}" width="1200" height="1200">
+            </div>
+          {%- else -%}
+            <div class="product-gallery__slide" data-gallery-slide data-gallery-index="0">
+              <img src="{{ 'hero-product.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="1200" height="1200">
+            </div>
+          {%- endif -%}
+          {%- if section.settings.badge != blank -%}
+            <span class="product-gallery__badge">{{ section.settings.badge }}</span>
+          {%- endif -%}
+        </div>
+        <div class="product-gallery__thumbs" data-gallery-thumbs>
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              {%- assign thumb_alt = media.alt | default: product.title -%}
+              <button
+                type="button"
+                class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                data-gallery-thumb
+                data-gallery-index="{{ forloop.index0 }}"
+                aria-label="{% if media.media_type == 'video' or media.media_type == 'external_video' %}Video{% else %}Imagen{% endif %} {{ forloop.index }}"
+              >
+                <img
+                  src="{{ media.preview_image | image_url: width: 120 }}"
+                  alt="{{ thumb_alt | escape }}"
+                  width="120"
+                  height="120"
+                  loading="lazy"
+                >
+                {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                  <span class="product-gallery__thumb-play" aria-hidden="true">▶</span>
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign fallbacks = 'hero-product.jpg,before-after.jpg,aplicar.jpg,product-closed.jpg' | split: ',' -%}
+            {%- for fb in fallbacks -%}
+              <button type="button" class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}" data-gallery-thumb data-gallery-index="{{ forloop.index0 }}" aria-label="Imagen {{ forloop.index }}">
+                <img src="{{ fb | asset_url }}" alt="" width="200" height="200" loading="lazy">
+              </button>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="product-info">
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        <h1>
+          {%- assign highlight = section.settings.title_highlight | default: 'Rellenador' -%}
+          {%- if product.title contains highlight -%}
+            {{ product.title | replace: highlight, '' | strip }}
+            <span class="text-pink">{{ highlight }}</span>
+          {%- else -%}
+            {{ product.title }}
+          {%- endif -%}
+        </h1>
+        <div class="product-info__rating">
+          {% render 'star-rating', count: 5, size: 'sm' %}
+          <span style="font-weight:700">{{ section.settings.rating }}</span>
+          <span class="text-muted">· {{ section.settings.review_count }}</span>
+        </div>
+
+        <div class="product-info__trust">
+          <span>{% render 'icon', name: 'truck', class: 'icon icon--sm icon--pink' %} Envío gratis</span>
+          <span>{% render 'icon', name: 'shield-check', class: 'icon icon--sm icon--pink' %} 3 cuotas sin interés</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pumperbundle" data-cta-anchor>
+  <section class="bg-background">
+    <div class="container-x" style="padding-bottom:2.5rem">
+      <div class="product-form-box">
+        <div class="product-form-box__title">Llevá Más, Ahorrá Más</div>
+
+        {% form 'product', product, id: 'product-form' %}
+          {% render 'product-bundle-picker', product: product, section: section %}
+        {% endform %}
+
+        <div class="product-form-box__trust">
+          <div>{% render 'icon', name: 'truck', class: 'icon icon--sm icon--pink' %}Envío gratis</div>
+          <div>{% render 'icon', name: 'rotate', class: 'icon icon--sm icon--pink' %}Cambios fáciles</div>
+          <div>{% render 'icon', name: 'shield-check', class: 'icon icon--sm icon--pink' %}Pago seguro</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="sticky-cta" data-sticky-cta>
+  <div class="sticky-cta__inner">
+    <div class="sticky-cta__info">
+      <div class="sticky-cta__meta" data-sticky-meta>Envío gratis</div>
+      <div class="sticky-cta__price-row">
+        <div class="sticky-cta__price" data-sticky-price></div>
+        <span class="sticky-cta__installments">3 cuotas sin interés</span>
+      </div>
+    </div>
+    <button type="button" class="btn-dark" data-sticky-add style="padding:0.75rem 1.25rem;font-size:0.875rem">
+      {% render 'icon', name: 'cart', class: 'icon icon--sm' %} Agregar
+    </button>
+  </div>
+</div>
+
+<script type="application/json" data-product-variants-json>{{ product.variants | json }}</script>
+<script>
+  window.HairplusProductForm = {
+    moneyFormat: {{ shop.money_format | json }},
+    addToCartLabel: {{ 'products.product.add_to_cart' | t | json }},
+    soldOutLabel: {{ 'products.product.sold_out' | t | json }}
+  };
+</script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Producto principal",
+  "tag": "section",
+  "class": "main-product-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Polvo capilar densificador" },
+    { "type": "text", "id": "title_highlight", "label": "Palabra destacada", "default": "Al instante.", "info": "Se resalta al final del título del producto." },
+    { "type": "text", "id": "badge", "label": "Badge galería", "default": "Bestseller" },
+    { "type": "text", "id": "rating", "label": "Puntuación", "default": "4.9" },
+    { "type": "text", "id": "review_count", "label": "Reseñas", "default": "+1.100 hombres ya lo usan" },
+    { "type": "number", "id": "default_bundle_qty", "label": "Bundle seleccionado por defecto", "default": 1 },
+    { "type": "number", "id": "compare_unit_pesos", "label": "Precio tachado unitario (× cantidad)", "default": 49990, "info": "Solo Llevá 2 y 3. Ej. 49990 × 2" }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Etiqueta", "default": "Llevá 1" },
+        { "type": "number", "id": "quantity", "label": "Cantidad", "default": 1 },
+        { "type": "text", "id": "badge", "label": "Badge (opcional)" },
+        { "type": "text", "id": "price", "label": "Precio mostrado", "default": "$39.899" },
+        { "type": "text", "id": "unit_suffix", "label": "Sufijo precio", "info": "Ej: /cu" },
+        { "type": "text", "id": "total_label", "label": "Total (resumen)", "info": "Ej: $77.940 para Llevá 3" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Producto principal",
+      "blocks": [
+        { "type": "bundle", "settings": { "label": "Llevá 1", "quantity": 1, "price": "$39.990", "total_label": "$39.990" } },
+        { "type": "bundle", "settings": { "label": "Llevá 2", "quantity": 2, "badge": "Más Popular", "price": "$34.990", "unit_suffix": "/cu", "total_label": "$69.980" } },
+        { "type": "bundle", "settings": { "label": "Llevá 3", "quantity": 3, "badge": "Mejor Valor", "price": "$29.990", "unit_suffix": "/cu", "total_label": "$89.970" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

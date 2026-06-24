@@ -1,0 +1,50 @@
+<section id="preguntas-frecuentes" class="section section--white">
+  <div class="container-x">
+    <div class="faq-layout">
+      <div class="faq-side">
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.side_image != blank -%}
+          {{ section.settings.side_image | image_url: width: 320 | image_tag: loading: 'lazy', alt: 'HairPLUS' }}
+        {%- else -%}
+          <img src="{{ 'product-closed.jpg' | asset_url }}" alt="HairPLUS" loading="lazy" width="160" height="160">
+        {%- endif -%}
+      </div>
+      {% render 'faq-accordion', blocks: section.blocks %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Preguntas frecuentes",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Preguntas frecuentes" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Todo lo que querés saber." },
+    { "type": "image_picker", "id": "side_image", "label": "Imagen lateral" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Mancha?" },
+        { "type": "textarea", "id": "answer", "label": "Respuesta", "default": "No. La fórmula está diseñada para fijarse al pelo y no transferirse a la ropa, almohadas ni a tus manos." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Preguntas frecuentes",
+      "blocks": [
+        { "type": "question", "settings": { "question": "¿Mancha?", "answer": "No. La fórmula está diseñada para fijarse al pelo y no transferirse a la ropa, almohadas ni a tus manos." } },
+        { "type": "question", "settings": { "question": "¿Cuánto dura?", "answer": "Hasta 24 horas o hasta el próximo lavado. Se mantiene impecable durante todo el día." } },
+        { "type": "question", "settings": { "question": "¿Se nota?", "answer": "El resultado es 100% natural. El polvo se mimetiza con tu pelo y agrega densidad visual sin apelmazar." } },
+        { "type": "question", "settings": { "question": "¿Sirve para entradas?", "answer": "Sí. Es uno de sus usos principales: cubrir canas, entradas y raíces, además de zonas con poca densidad capilar." } },
+        { "type": "question", "settings": { "question": "¿Qué tono elijo?", "answer": "Tenemos negro, castaño oscuro, castaño claro y rubio. Te ayudamos a elegir respondiendo 3 preguntas." } },
+        { "type": "question", "settings": { "question": "¿Resiste el sudor?", "answer": "Sí. Es resistente al agua, al sudor y al viento. Pensado para acompañarte todo el día." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

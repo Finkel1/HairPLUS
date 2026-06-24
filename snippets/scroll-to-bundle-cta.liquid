@@ -1,0 +1,14 @@
+{%- assign cta_label = label | default: 'Conseguilo ahora' -%}
+{%- assign cta_class = class | default: 'btn-dark scroll-to-bundle-cta' -%}
+{%- if template.name == 'product' -%}
+  <button type="button" class="{{ cta_class }}" data-scroll-to-bundle>
+    {{ cta_label }}
+    {% render 'icon', name: 'arrow-right', class: 'icon icon--sm' %}
+  </button>
+{%- else -%}
+  {%- capture product_page_url -%}{% render 'product-cta-url' %}{%- endcapture -%}
+  <a href="{{ product_page_url | strip }}#pumperbundle" class="{{ cta_class }}">
+    {{ cta_label }}
+    {% render 'icon', name: 'arrow-right', class: 'icon icon--sm' %}
+  </a>
+{%- endif -%}

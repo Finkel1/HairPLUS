@@ -1,0 +1,40 @@
+{%- comment -%}
+  Total de marketing para un color (variante) en el carrito.
+  Reparte el total del carrito proporcionalmente por peso de unidad (u1 39899 / u2 29980 / u3+ 25980).
+  Parámetros: variant_id, bundle_handle
+{%- endcomment -%}
+{%- assign target_variant_id = variant_id | plus: 0 -%}
+{%- assign total_units = 0 -%}
+{%- for item in cart.items -%}
+  {%- if item.product.handle == bundle_handle -%}
+    {%- assign total_units = total_units | plus: item.quantity -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if total_units <= 0 -%}
+  0
+{%- else -%}
+  {%- capture grand_total_str -%}{%- render 'bundle-cyclic-price', mode: 'cart_total', count: total_units -%}{%- endcapture -%}
+  {%- assign grand_total = grand_total_str | strip | plus: 0 -%}
+  {%- assign weight_sum = 0 -%}
+  {%- assign variant_weight = 0 -%}
+  {%- assign global_pos = 0 -%}
+  {%- for item in cart.items -%}
+    {%- if item.product.handle == bundle_handle -%}
+      {%- for _i in (1..item.quantity) -%}
+        {%- assign global_pos = global_pos | plus: 1 -%}
+        {%- capture unit_weight_str -%}{%- render 'bundle-cyclic-price', mode: 'unit', unit_index: global_pos -%}{%- endcapture -%}
+        {%- assign unit_weight = unit_weight_str | strip | plus: 0 -%}
+        {%- assign weight_sum = weight_sum | plus: unit_weight -%}
+        {%- if item.variant_id == target_variant_id -%}
+          {%- assign variant_weight = variant_weight | plus: unit_weight -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if weight_sum > 0 and variant_weight > 0 -%}
+    {{ grand_total | times: variant_weight | divided_by: weight_sum }}
+  {%- else -%}
+    0
+  {%- endif -%}
+{%- endif -%}

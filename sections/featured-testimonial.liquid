@@ -1,0 +1,129 @@
+<section class="section section--cream product-page-testimonial">
+  <div class="container-x">
+    <div class="quote-carousel-wrap" data-reviews-carousel>
+      <div class="quote-carousel__slides" data-review-swipe>
+        {%- for block in section.blocks -%}
+          <div
+            class="featured-quote featured-quote--card quote-carousel__slide{% unless forloop.first %} hidden{% endunless %}"
+            data-review-slide
+            {{ block.shopify_attributes }}
+          >
+            <p>"{{ block.settings.quote }}"</p>
+            {% render 'star-rating', count: 5 %}
+            <p class="featured-quote__name">{{ block.settings.name }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.blocks.size > 1 -%}
+        <div class="quote-carousel__controls quote-carousel__controls--arrows-only">
+          <button type="button" class="quote-carousel__btn" data-review-prev aria-label="Reseña anterior">
+            {% render 'icon', name: 'chevron-left', class: 'icon' %}
+          </button>
+          <button type="button" class="quote-carousel__btn" data-review-next aria-label="Reseña siguiente">
+            {% render 'icon', name: 'chevron-right', class: 'icon' %}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonial destacado",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Reseña",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Texto",
+          "default": "Tenía canas y entradas muy marcadas y me daban mucha inseguridad. Ahora las cubro en un momento y salgo sin pensar en eso. Muy contenta."
+        },
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Liliana Noriega" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial destacado",
+      "blocks": [
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Tenía canas y entradas muy marcadas y me daban mucha inseguridad. Ahora las cubro en un momento y salgo sin pensar en eso. Muy contenta.",
+            "name": "Liliana Noriega"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Lo compré con dudas porque ya había probado cosas que no funcionaron. Funciona bien y no mancha.",
+            "name": "Marisa Irazusta"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Cubre las canas perfecto y no se nota nada. Mi hija pensó que me había teñido de nuevo.",
+            "name": "Silvia Méndez"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Después de probar mil sprays, esto es lo único que de verdad no mancha y queda natural.",
+            "name": "Patricia Funes"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Lo uso antes de cada reunión. Me devolvió la confianza en mi imagen sin gastar una fortuna en peluquería.",
+            "name": "Laura Quiroga"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Las entradas me preocupaban mucho. Con el polvo las tapo en segundos y el acabado queda muy natural.",
+            "name": "Graciela Romero"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Llevo un mes usándolo y no mancha la almohada ni la ropa. Eso para mí es fundamental.",
+            "name": "Carmen Delgado"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Mi peluquera me preguntó qué me había hecho. Le conté y ahora lo recomienda a sus clientas.",
+            "name": "Rosa Altamirano"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Probé otros polvos y siempre manchaban. Este es el único que me funciona de verdad.",
+            "name": "Ana Belén Costa"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "quote": "Lo llevo en el bolso por si acaso. Me salvó en un cumpleaños donde salí directo del trabajo.",
+            "name": "Mónica Suárez"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

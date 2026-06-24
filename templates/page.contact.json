@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "settings": {
+        "eyebrow": "Contacto",
+        "heading": "Contacto",
+        "intro": "¿Tenés dudas sobre tu tono, el envío o tu pedido? Escribinos y te respondemos lo antes posible.",
+        "email": "atencion@HairPLUS.com.ar",
+        "whatsapp": "5492615100670",
+        "phone_label": "+54 9 261 510-0670",
+        "whatsapp_message": "Hola HairPLUS, quiero hacer una consulta.",
+        "note": "Horario de atención: lunes a viernes de 9 a 18 h (hora Argentina)."
+      }
+    }
+  },
+  "order": ["main"]
+}

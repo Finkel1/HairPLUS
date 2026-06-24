@@ -1,0 +1,54 @@
+{%- comment -%} Tarjeta de bundle (defaults sin blocks del editor). {%- endcomment -%}
+{%- assign qty = qty | plus: 0 -%}
+{%- assign compare_price = '' -%}
+{%- if qty > 1 -%}
+  {%- capture compare_price -%}{%- render 'bundle-compare-price', qty: qty, section: section -%}{%- endcapture -%}
+  {%- assign compare_price = compare_price | strip -%}
+{%- endif -%}
+<div
+  class="bundle-option{% if qty == default_qty %} is-selected{% endif %}"
+  data-bundle-option
+  data-qty="{{ qty }}"
+  data-total-label="{{ total_label | escape }}"
+  {% if qty > 1 and compare_price != blank %}data-compare-label="{{ compare_price | escape }}"{% endif %}
+>
+  {%- if badge != blank -%}
+    <span class="bundle-option__badge">{{ badge }}</span>
+  {%- endif -%}
+  <button
+    type="button"
+    class="bundle-option__btn"
+    data-bundle-select
+    aria-pressed="{% if qty == default_qty %}true{% else %}false{% endif %}"
+  >
+    <span class="bundle-option__radio" aria-hidden="true"></span>
+    <span class="bundle-option__content">
+      <span class="bundle-option__row">
+        <span class="bundle-option__left">
+          <span class="bundle-option__label">{{ label }}</span>
+          <span class="bundle-option__sub">Envío Gratis + 3 Cuotas</span>
+        </span>
+        <span class="bundle-option__prices">
+          <span class="bundle-option__price">{{ price }}{% if unit_suffix != blank %}<span class="bundle-option__unit">{{ unit_suffix }}</span>{% endif %}</span>
+          {%- if qty > 1 and compare_price != blank -%}
+            <span class="bundle-option__compare">{{ compare_price }}</span>
+          {%- endif -%}
+        </span>
+      </span>
+    </span>
+  </button>
+  {%- if color_option -%}
+    <div class="bundle-option__colors" data-bundle-colors>
+      <div class="bundle-option__colors-label">Color</div>
+      <div class="bundle-option__color-slots">
+        {%- for i in (1..qty) -%}
+          {%- capture slot_label -%}Color unidad {{ i }}{%- endcapture -%}
+          <div class="bundle-color-slot">
+            <span class="bundle-color-slot__num">#{{ i }}</span>
+            {% render 'bundle-color-select', color_option: color_option, slot_label: slot_label %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>

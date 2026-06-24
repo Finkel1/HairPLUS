@@ -1,0 +1,36 @@
+{%- comment -%}
+  Precios de marketing por cantidad:
+    1 unidad  → 39899
+    2 unidades → 59960 (total)
+    3 o más   → 25980 por unidad (total = N × 25980)
+  Compare (precio tachado): 1 → 59899 ; 2 o más → N × 39899
+  Pesos por unidad (reparto por fila): u1 39899 / u2 29980 / u3+ 25980
+  mode: 'unit' | 'chunk_total' | 'cart_total' | 'compare_total'
+{%- endcomment -%}
+
+{%- if mode == 'cart_total' -%}
+  {%- assign total_count = count | default: 0 | plus: 0 -%}
+  {%- if total_count <= 0 -%}0
+  {%- elsif total_count == 1 -%}39899
+  {%- elsif total_count == 2 -%}59960
+  {%- else -%}{{ total_count | times: 25980 }}
+  {%- endif -%}
+{%- elsif mode == 'compare_total' -%}
+  {%- assign total_count = count | default: 0 | plus: 0 -%}
+  {%- if total_count <= 0 -%}0
+  {%- elsif total_count == 1 -%}59899
+  {%- else -%}{{ total_count | times: 39899 }}
+  {%- endif -%}
+{%- elsif mode == 'chunk_total' -%}
+  {%- assign chunk_size = chunk_size | default: 1 | plus: 0 -%}
+  {%- if chunk_size == 1 -%}39899
+  {%- elsif chunk_size == 2 -%}59960
+  {%- else -%}77940
+  {%- endif -%}
+{%- else -%}
+  {%- assign unit_index = unit_index | default: 1 | plus: 0 -%}
+  {%- if unit_index == 1 -%}39899
+  {%- elsif unit_index == 2 -%}29980
+  {%- else -%}25980
+  {%- endif -%}
+{%- endif -%}

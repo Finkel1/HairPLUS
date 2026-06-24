@@ -1,0 +1,31 @@
+{%- comment -%}
+  Logo del sitio. Parámetros: image, alt, link_class, img_class, loading
+{%- endcomment -%}
+{%- liquid
+  assign logo_alt = alt | default: shop.name
+  assign logo_loading = loading | default: 'lazy'
+  assign logo_link_class = link_class | default: 'site-logo'
+  assign logo_img_class = img_class | default: 'site-logo__img'
+-%}
+<a href="{{ routes.root_url }}" class="{{ logo_link_class }}">
+  {%- if image != blank -%}
+    {{
+      image
+      | image_url: width: 300
+      | image_tag:
+        class: logo_img_class,
+        alt: logo_alt,
+        widths: '150, 200, 300',
+        loading: logo_loading
+    }}
+  {%- else -%}
+    <img
+      src="{{ 'logo-oscuro-horizontal.png' | asset_url }}"
+      alt="{{ logo_alt | escape }}"
+      class="{{ logo_img_class }}"
+      width="150"
+      height="60"
+      loading="{{ logo_loading }}"
+    >
+  {%- endif -%}
+</a>

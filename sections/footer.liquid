@@ -1,0 +1,289 @@
+{%- liquid
+  assign logo_text = section.settings.logo_text | default: shop.name
+
+  assign instagram_handle = section.settings.instagram_handle | default: 'HairPLUS.ar' | remove: '@' | strip
+  assign instagram_label = '@' | append: instagram_handle
+  assign instagram_url = section.settings.instagram_url | default: settings.social_instagram
+  if instagram_url == blank
+    assign instagram_url = 'https://www.instagram.com/' | append: instagram_handle | append: '/'
+  endif
+
+  assign contact_email = section.settings.email | default: 'atencion@HairPLUS.com.ar'
+  assign whatsapp_raw = section.settings.whatsapp | default: settings.social_whatsapp | default: '5492615100670' | replace: ' ', '' | replace: '+', '' | replace: '-', ''
+  assign phone_label = section.settings.phone_label | default: '+54 9 261 510-0670'
+  assign whatsapp_url = 'https://wa.me/' | append: whatsapp_raw
+
+  assign contact_url = section.settings.contact_url
+  if contact_url == blank and pages.contact != blank
+    assign contact_url = pages.contact.url
+  endif
+
+  assign faq_url = section.settings.faq_url
+  if faq_url == blank
+    assign faq_url = routes.root_url | append: '#preguntas-frecuentes'
+  endif
+
+  assign shipping_url = section.settings.shipping_url
+  if shipping_url == blank and shop.shipping_policy != blank
+    assign shipping_url = shop.shipping_policy.url
+  endif
+
+  assign terms_url = section.settings.terms_url
+  if terms_url == blank and shop.terms_of_service != blank
+    assign terms_url = shop.terms_of_service.url
+  endif
+
+  capture product_url
+    render 'product-cta-url'
+  endcapture
+  assign product_url = product_url | strip
+-%}
+
+<footer class="site-footer">
+  <div class="container-x site-footer__inner">
+    <div class="site-footer__main">
+      <div class="site-footer__brand">
+        {% render 'site-logo',
+          image: section.settings.logo_image,
+          alt: logo_text,
+          link_class: 'site-footer__logo',
+          img_class: 'site-footer__logo-img'
+        %}
+
+        {%- if section.settings.tagline != blank -%}
+          <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.show_instagram -%}
+          <a
+            href="{{ instagram_url }}"
+            class="site-footer__instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {% render 'icon', name: 'instagram', class: 'icon icon--sm' %}
+            <span>{{ instagram_label }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__heading">{{ section.settings.shop_heading }}</h3>
+        <ul class="site-footer__links">
+          <li>
+            <a href="{{ product_url }}" class="site-footer__link">{{ section.settings.shop_buy_label }}</a>
+          </li>
+          <li>
+            <a href="{{ routes.root_url }}" class="site-footer__link">{{ section.settings.shop_home_label }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__heading">{{ section.settings.help_heading }}</h3>
+        <ul class="site-footer__links">
+          {%- if section.settings.show_faq and faq_url != blank -%}
+            <li><a href="{{ faq_url }}" class="site-footer__link">Preguntas frecuentes</a></li>
+          {%- endif -%}
+          {%- if section.settings.show_contact and contact_url != blank -%}
+            <li><a href="{{ contact_url }}" class="site-footer__link">Contacto</a></li>
+          {%- endif -%}
+          {%- if section.settings.show_shipping and shipping_url != blank -%}
+            <li><a href="{{ shipping_url }}" class="site-footer__link">Política de envíos</a></li>
+          {%- endif -%}
+          {%- if section.settings.show_terms and terms_url != blank -%}
+            <li><a href="{{ terms_url }}" class="site-footer__link">Términos y condiciones</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__heading">{{ section.settings.contact_heading }}</h3>
+        <ul class="site-footer__links site-footer__links--contact">
+          {%- if contact_email != blank -%}
+            <li>
+              <a href="mailto:{{ contact_email }}" class="site-footer__link site-footer__link--icon">
+                {% render 'icon', name: 'mail', class: 'icon icon--sm' %}
+                <span>{{ contact_email }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if whatsapp_raw != blank -%}
+            <li>
+              <a
+                href="{{ whatsapp_url }}"
+                class="site-footer__link site-footer__link--icon"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {% render 'icon', name: 'phone', class: 'icon icon--sm' %}
+                <span>{{ phone_label }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__copy">
+      © {{ 'now' | date: '%Y' }} {{ logo_text }}. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pie de página",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo",
+      "info": "Si no elegís imagen, se usa el logo del tema."
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Texto alternativo del logo",
+      "default": "HairPLUS"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Descripción",
+      "default": "Cosmética capilar pensada para hombres reales. Hecha en Argentina."
+    },
+    {
+      "type": "header",
+      "content": "Instagram"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram",
+      "label": "Mostrar Instagram",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "Usuario de Instagram",
+      "default": "HairPLUS.ar",
+      "info": "Sin @. Se muestra como @HairPLUS.ar y enlaza a instagram.com/HairPLUS.ar"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "URL de Instagram (opcional)",
+      "info": "Si está vacío, se arma con el usuario de arriba."
+    },
+    {
+      "type": "header",
+      "content": "Columna Tienda"
+    },
+    {
+      "type": "text",
+      "id": "shop_heading",
+      "label": "Título",
+      "default": "Tienda"
+    },
+    {
+      "type": "text",
+      "id": "shop_buy_label",
+      "label": "Enlace comprar",
+      "default": "Comprar"
+    },
+    {
+      "type": "text",
+      "id": "shop_home_label",
+      "label": "Enlace inicio",
+      "default": "Inicio"
+    },
+    {
+      "type": "header",
+      "content": "Columna Ayuda"
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Título",
+      "default": "Ayuda"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Mostrar preguntas frecuentes",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "faq_url",
+      "label": "URL de preguntas frecuentes",
+      "info": "Si está vacío, enlaza al inicio (#preguntas-frecuentes)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Mostrar contacto",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "URL de contacto",
+      "info": "Si está vacío, usa la página Contacto del sitio."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping",
+      "label": "Mostrar política de envíos",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "shipping_url",
+      "label": "URL de política de envíos",
+      "info": "Si está vacío, usa la política de envíos de Shopify."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_terms",
+      "label": "Mostrar términos y condiciones",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "URL de términos y condiciones",
+      "info": "Si está vacío, usa los términos del servicio de Shopify."
+    },
+    {
+      "type": "header",
+      "content": "Columna Contacto"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Título",
+      "default": "Contacto"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "atencion@HairPLUS.com.ar"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "WhatsApp (solo números)",
+      "default": "5492615100670"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Teléfono visible",
+      "default": "+54 9 261 510-0670"
+    }
+  ]
+}
+{% endschema %}

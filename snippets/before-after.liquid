@@ -1,0 +1,48 @@
+{%- liquid
+  assign before_src = nil
+  assign after_src = nil
+
+  if image_before != blank
+    assign before_src = image_before | image_url: width: 1200
+  elsif fallback_before != blank
+    assign before_src = fallback_before | asset_url
+  endif
+
+  if image_after != blank
+    assign after_src = image_after | image_url: width: 1200
+  elsif fallback_after != blank
+    assign after_src = fallback_after | asset_url
+  endif
+-%}
+<div class="before-after" data-before-after role="img" aria-label="{{ alt | escape }}">
+  {%- if after_src and before_src -%}
+    <img
+      class="before-after__img before-after__img--after"
+      src="{{ after_src }}"
+      alt="{{ alt | escape }}"
+      loading="lazy"
+      width="800"
+      height="800"
+      draggable="false"
+    >
+    <div class="before-after__clip" data-before-clip style="width:50%">
+      <img
+        class="before-after__img before-after__img--before"
+        src="{{ before_src }}"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        width="800"
+        height="800"
+        draggable="false"
+      >
+      <span class="before-after__label before-after__label--before">Antes</span>
+    </div>
+    <span class="before-after__label before-after__label--after">Después</span>
+    <div class="before-after__handle" data-before-handle style="left:50%" aria-hidden="true">
+      <div class="before-after__knob">
+        {% render 'icon', name: 'move', class: 'icon icon--sm' %}
+      </div>
+    </div>
+  {%- endif -%}
+</div>

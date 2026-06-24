@@ -1,0 +1,69 @@
+{%- comment -%}
+  Carrusel "Todas las reseñas" en carrito (10 reseñas, sin dots).
+{%- endcomment -%}
+{%- liquid
+  assign reviews_heading = heading | default: 'Todas las reseñas'
+  assign reviews_rating = rating | default: '4.62'
+  assign reviews_count = review_count | default: '1029'
+  assign review_imgs = 'review-norma-videla.jpg,review-patricia-lugones.jpg,review-viviana-alvarez.jpg,review-claudia-brizuela.jpg,review-carolina-bravo.jpg,review-miriam-lopez.jpg,review-marisa-irazusta.jpg,review-ana-villalba.jpg,review-silvia-romero.jpg' | split: ','
+  assign review_quotes = 'Tenía canas y entradas muy marcadas y me daban mucha inseguridad. Ahora las cubro en un momento y salgo sin pensar en eso. Muy contenta.~~~Lo compré con dudas porque ya había probado cosas que no funcionaron. Funciona bien y no mancha.~~~Cubre las canas perfecto y no se nota nada. Mi hija pensó que me había teñido de nuevo.~~~Después de probar mil sprays, esto es lo único que de verdad no mancha y queda natural.~~~Lo uso antes de cada reunión. Me devolvió la confianza en mi imagen sin gastar una fortuna en peluquería.~~~Las entradas me preocupaban mucho. Con el polvo las tapo en segundos y el acabado queda muy natural.~~~Llevo un mes usándolo y no mancha la almohada ni la ropa. Eso para mí es fundamental.~~~Mi peluquera me preguntó qué me había hecho. Le conté y ahora lo recomienda a sus clientas.~~~Probé otros polvos y siempre manchaban. Este es el único que me funciona de verdad.~~~Lo llevo en el bolso por si acaso. Me salvó en un cumpleaños donde salí directo del trabajo.' | split: '~~~'
+  assign review_names = 'Liliana Noriega~~~Marisa Irazusta~~~Silvia Méndez~~~Patricia Funes~~~Laura Quiroga~~~Graciela Romero~~~Carmen Delgado~~~Rosa Altamirano~~~Ana Belén Costa~~~Mónica Suárez' | split: '~~~'
+-%}
+
+<div class="cart-reviews">
+  <div class="cart-reviews__header">
+    <h2 class="cart-reviews__title">{{ reviews_heading }}</h2>
+    <div class="rating-summary cart-reviews__rating">
+      {% render 'star-rating', count: 5 %}
+      <span class="cart-reviews__score">{{ reviews_rating }}</span>
+      <span class="text-muted">({{ reviews_count }})</span>
+      <span class="cart-reviews__verified">
+        {% render 'icon', name: 'badge-check', class: 'icon icon--sm icon--pink' %}
+        Verificado
+      </span>
+    </div>
+  </div>
+
+  <div class="cart-reviews__carousel-wrap" data-reviews-carousel>
+    <div class="reviews-carousel cart-reviews__carousel">
+      <button type="button" class="reviews-carousel__btn" data-review-prev aria-label="Reseña anterior">
+        {% render 'icon', name: 'chevron-left', class: 'icon' %}
+      </button>
+
+      <div class="cart-reviews__stage" data-review-swipe>
+        {%- for quote in review_quotes -%}
+          {%- assign name = review_names[forloop.index0] -%}
+          {%- assign img_mod = forloop.index0 | modulo: review_imgs.size -%}
+          {%- assign img_file = review_imgs[img_mod] -%}
+          <article
+            class="reviews-carousel__card{% unless forloop.first %} hidden{% endunless %}"
+            data-review-slide
+          >
+            <div class="review-card__img">
+              {% render 'review-card-image',
+                asset_path: img_file,
+                alt: name,
+                eager: forloop.first
+              %}
+            </div>
+            <div class="review-card__body">
+              <p>"{{ quote }}"</p>
+              <div class="stars stars--sm cart-reviews__card-stars">
+                {%- for i in (1..5) -%}{% render 'icon', name: 'star', class: 'icon icon--pink' %}{%- endfor -%}
+              </div>
+              <p class="review-card__name">{{ name }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <button type="button" class="reviews-carousel__btn" data-review-next aria-label="Reseña siguiente">
+        {% render 'icon', name: 'chevron-right', class: 'icon' %}
+      </button>
+    </div>
+
+    <div class="section-bundle-cta cart-reviews__cta">
+      {% render 'scroll-to-bundle-cta' %}
+    </div>
+  </div>
+</div>

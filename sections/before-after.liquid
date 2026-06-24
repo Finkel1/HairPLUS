@@ -1,0 +1,96 @@
+<section id="resultados" class="section section--cream">
+  <div class="container-x">
+    <div class="section-header">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+
+    <div class="before-after-layout mt-10">
+      <div class="before-after-col">
+        {% render 'before-after',
+          image_before: section.settings.image_before,
+          image_after: section.settings.image_after,
+          fallback_before: 'before-after-antes.png',
+          fallback_after: 'before-after-despues.png',
+          alt: section.settings.before_after_alt | default: 'Antes y después HairPLUS'
+        %}
+        <div class="before-after-gallery">
+          <div class="rounded-media">
+            {%- if section.settings.gallery_image_1 != blank -%}
+              {{
+                section.settings.gallery_image_1
+                | image_url: width: 600
+                | image_tag: loading: 'lazy', alt: section.settings.gallery_image_1.alt
+              }}
+            {%- else -%}
+              <img
+                src="{{ 'before-after-side.jpg' | asset_url }}"
+                alt="Hombre con HairPLUS"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- endif -%}
+          </div>
+          <div class="rounded-media">
+            {%- if section.settings.gallery_image_2 != blank -%}
+              {{
+                section.settings.gallery_image_2
+                | image_url: width: 600
+                | image_tag: loading: 'lazy', alt: section.settings.gallery_image_2.alt
+              }}
+            {%- else -%}
+              <img
+                src="{{ 'before-after-gallery-2.png' | asset_url }}"
+                alt="Antes y después con producto HairPLUS"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- endif -%}
+          </div>
+        </div>
+        {% render 'before-after-strip',
+          strip_image: section.settings.strip_image,
+          fallback_strip: 'before-after-strip.png',
+          alt: section.settings.strip_alt
+        %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Antes y después",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Resultados" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Resultados reales. Sin filtros." },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción",
+      "default": "Deslizá para ver la transformación. Canas, entradas y raíces cubiertas en segundos."
+    },
+    { "type": "image_picker", "id": "image_before", "label": "Imagen «Antes»" },
+    { "type": "image_picker", "id": "image_after", "label": "Imagen «Después»" },
+    {
+      "type": "text",
+      "id": "before_after_alt",
+      "label": "Alt imagen comparativa",
+      "default": "Antes y después HairPLUS"
+    },
+    { "type": "image_picker", "id": "strip_image", "label": "Imagen horizontal antes/después (abajo)" },
+    {
+      "type": "text",
+      "id": "strip_alt",
+      "label": "Alt imagen horizontal",
+      "default": "Antes y después HairPLUS"
+    },
+    { "type": "image_picker", "id": "gallery_image_1", "label": "Imagen cuadrada izquierda" },
+    { "type": "image_picker", "id": "gallery_image_2", "label": "Imagen cuadrada derecha" }
+  ],
+  "presets": [{ "name": "Antes y después" }]
+}
+{% endschema %}

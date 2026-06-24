@@ -1,82 +1,370 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main": {
-      "type": "hairplus-landing",
-      "settings": {
-        "product_handle": "hairplus-polvo-capilar",
-        "hero_eyebrow": "Polvo capilar densificador",
-        "hero_title": "Más pelo.\nAl instante.",
-        "hero_subtitle": "Disimula entradas, coronilla y zonas con poco pelo. Cubre canas y raíces. Sin proceso, sin compromiso.",
-        "social_proof": "+1.100 hombres ya lo usan",
-        "lifestyle_quote": "Sin ritual. Sin\ncompromiso."
-      },
+    "hero": {
+      "type": "hero",
       "blocks": {
-        "t1": {
-          "type": "testimonial",
+        "badge-1": {
+          "type": "badge",
           "settings": {
-            "quote": "Me salva para ir a trabajar, tengo muy poco pelo en los costados.",
-            "author": "Martín G. · Buenos Aires"
+            "icon": "droplets",
+            "label": "No mancha"
           }
         },
-        "t2": {
-          "type": "testimonial",
+        "badge-2": {
+          "type": "badge",
           "settings": {
-            "quote": "Ya es la tercera vez que lo compro. Es lo mejor para disimular los pequeños huecos de la cabeza.",
-            "author": "Federico R. · Córdoba"
+            "icon": "shield",
+            "label": "Resistente al agua"
           }
         },
-        "t3": {
-          "type": "testimonial",
+        "badge-3": {
+          "type": "badge",
           "settings": {
-            "quote": "Ahora tengo una ex coronilla. Impecable.",
-            "author": "Diego M. · Rosario"
+            "icon": "wind",
+            "label": "Resiste sudor"
           }
         },
-        "t4": {
-          "type": "testimonial",
+        "badge-4": {
+          "type": "badge",
           "settings": {
-            "quote": "Cumple su función: disimular el crecimiento de las canas y estirar el tiempo de volver a retocar.",
-            "author": "Lucas P. · Mendoza"
-          }
-        },
-        "f1": {
-          "type": "faq",
-          "settings": {
-            "question": "¿Se nota que lo usás?",
-            "answer": "No. El polvo se integra al cabello existente y replica la densidad natural. Resultado indetectable."
-          }
-        },
-        "f2": {
-          "type": "faq",
-          "settings": {
-            "question": "¿Mancha la ropa o se transfiere?",
-            "answer": "Dejalo secar 3-4 minutos después de aplicar. Una vez fijo, no mancha ni se transfiere."
-          }
-        },
-        "f3": {
-          "type": "faq",
-          "settings": {
-            "question": "¿Sale con el agua o el sudor?",
-            "answer": "Resistente al agua y al sudor durante todo el día. Se quita únicamente con shampoo."
-          }
-        },
-        "f4": {
-          "type": "faq",
-          "settings": {
-            "question": "¿Cuánto dura el envase?",
-            "answer": "Los 4g rinden mucho más de lo que parecen. Uso diario: entre 2 y 4 meses."
-          }
-        },
-        "f5": {
-          "type": "faq",
-          "settings": {
-            "question": "¿Sirve si tengo mucha pérdida de pelo?",
-            "answer": "Sí. Disimula zonas finas y da densidad visual. Ideal para alopecia leve o pelo fino."
+            "icon": "sparkles",
+            "label": "Resultado natural"
           }
         }
       },
-      "block_order": ["t1", "t2", "t3", "t4", "f1", "f2", "f3", "f4", "f5"]
+      "block_order": ["badge-1", "badge-2", "badge-3", "badge-4"],
+      "settings": {
+        "secondary_link": "#resultados"
+      }
+    },
+    "problem": {
+      "type": "problem",
+      "blocks": {
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "title": "Antes de una reunión",
+            "text": "Te mirás al espejo y las raíces te delatan justo cuando más segura querés sentirte."
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "title": "Antes de una salida",
+            "text": "El turno con tu colorista es la semana que viene, pero la cena es hoy."
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "title": "Entre turno y turno",
+            "text": "Pasan 3 semanas y ya se ven las canas. No querés volver al salón tan pronto."
+          }
+        }
+      },
+      "block_order": ["card-1", "card-2", "card-3"],
+      "settings": {}
+    },
+    "before-after": {
+      "type": "before-after",
+      "settings": {}
+    },
+    "comparison": {
+      "type": "comparison",
+      "settings": {
+        "eyebrow": "La diferencia",
+        "heading": "¿Por qué el polvo funciona mejor que el spray?",
+        "image_alt": "Spray tradicional vs polvo HairPLUS"
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkles",
+            "title": "Cubre canas al instante",
+            "text": "Resultado visible apenas lo aplicás."
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Oculta entradas visibles",
+            "text": "Suma densidad donde más necesitás."
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "clock",
+            "title": "Cubre raíces al instante",
+            "text": "Retocá el crecimiento sin ir al salón."
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "droplets",
+            "title": "No mancha ropa",
+            "text": "Se queda en el pelo, no en tu remera."
+          }
+        },
+        "b5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wind",
+            "title": "Resiste el día a día",
+            "text": "Aguanta sudor, viento y lluvia ligera."
+          }
+        },
+        "b6": {
+          "type": "benefit",
+          "settings": {
+            "icon": "scissors",
+            "title": "Se elimina con shampoo",
+            "text": "Lavás y listo, sin residuos."
+          }
+        },
+        "b7": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Menos peluquería",
+            "text": "Estirá tu coloración varias semanas más."
+          }
+        }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7"],
+      "settings": {}
+    },
+    "how-it-works": {
+      "type": "how-it-works",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "number": "01",
+            "title": "Elegí tu tono",
+            "text": "Negro, castaño oscuro, castaño claro, rubio, rubio claro, gris oscuro y gris."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "number": "02",
+            "title": "Aplicá el polvo",
+            "text": "Con la esponja, directo sobre canas, entradas o raíces."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "number": "03",
+            "title": "Difuminá y seguí con tu día",
+            "text": "Listo en menos de 2 minutos."
+          }
+        }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {}
+    },
+    "social-proof": {
+      "type": "social-proof",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-norma-videla.jpg",
+            "text": "Me lo compré para eventos especiales, funcionó perfecto. Ahora lo uso todo el tiempo. Muy buena.",
+            "name": "Norma Videla",
+            "stars": 5
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-patricia-lugones.jpg",
+            "text": "Cubre bien, dura todo el día y no se nota que usaste nada. Ya había comprado dos productos similares que no funcionaban.",
+            "name": "Patricia Lugones",
+            "stars": 5
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-viviana-alvarez.jpg",
+            "text": "Probé tres sprays distintos antes de encontrar este polvo. Todos prometían y ninguno cumplía. Este sí.",
+            "name": "Viviana Alvarez",
+            "stars": 5
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-claudia-brizuela.jpg",
+            "text": "Siempre me peinaba de una forma para tapar la raíz. Desde que tengo este polvo uso el pelo como quiero.",
+            "name": "Claudia Brizuela",
+            "stars": 5
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-carolina-bravo.jpg",
+            "text": "Da densidad y tapa las partes faltantes. Podés mojarte tranquila que no se va a salir ni correr.",
+            "name": "Carolina Bravo",
+            "stars": 5
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-miriam-lopez.jpg",
+            "text": "Me gusta cómo queda y no es un enchastre como el L'Oréal Magic Retouch que es en spray y salpica.",
+            "name": "Miriam Lopez",
+            "stars": 5
+          }
+        },
+        "r7": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-marisa-irazusta.jpg",
+            "text": "Lo compré con dudas porque ya había probado cosas que no funcionaron. Funciona bien.",
+            "name": "Marisa Irazusta",
+            "stars": 4
+          }
+        },
+        "r8": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-ana-villalba.jpg",
+            "text": "Muy bueno, cubre bien y no mancha. El tono me quedó apenas más claro de lo que esperaba pero igual me gustó.",
+            "name": "Ana Villalba",
+            "stars": 4
+          }
+        },
+        "r9": {
+          "type": "review",
+          "settings": {
+            "fallback_image": "review-silvia-romero.jpg",
+            "text": "Me salva siempre, me queda el pelo como si recién saliera de la pelu. Lo amo.",
+            "name": "Silvia Romero",
+            "stars": 5
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"],
+      "settings": {
+        "review_count": "1029 reseñas verificadas"
+      }
+    },
+    "shipping": {
+      "type": "shipping",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Envíos a todo el país",
+            "text": "Despachos cada 48 hs con Andreani. Llega en menos de una semana."
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "icon": "shield-check",
+            "title": "Pago seguro",
+            "text": "Tarjeta, transferencia o efectivo. Hasta 3 cuotas sin interés."
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "icon": "headphones",
+            "title": "Atención personalizada",
+            "text": "Hablás con nosotros por WhatsApp. Respondemos rápido."
+          }
+        }
+      },
+      "block_order": ["i1", "i2", "i3"],
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "¿Mancha?",
+            "answer": "No. La fórmula está diseñada para fijarse al pelo y no transferirse a la ropa, almohadas ni a tus manos."
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuánto dura?",
+            "answer": "Hasta 24 horas o hasta el próximo lavado. Se mantiene impecable durante todo el día."
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Se nota?",
+            "answer": "El resultado es 100% natural. El polvo se mimetiza con tu pelo y agrega densidad visual sin apelmazar."
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Sirve para entradas?",
+            "answer": "Sí. Es uno de sus usos principales: cubrir canas, entradas y raíces, además de zonas con poca densidad capilar."
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué tono elijo?",
+            "answer": "Tenemos negro, castaño oscuro, castaño claro y rubio. Te ayudamos a elegir respondiendo 3 preguntas."
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "¿Resiste el sudor?",
+            "answer": "Sí. Es resistente al agua, al sudor y al viento. Pensado para acompañarte todo el día."
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"],
+      "settings": {}
+    },
+    "final-cta": {
+      "type": "final-cta",
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "hero",
+    "problem",
+    "before-after",
+    "comparison",
+    "benefits",
+    "how-it-works",
+    "social-proof",
+    "shipping",
+    "faq",
+    "final-cta"
+  ]
 }

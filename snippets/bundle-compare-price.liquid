@@ -1,0 +1,9 @@
+{%- comment -%}
+  Precio tachado = $39.899 × cantidad. Sin tachado en Llevá 1.
+{%- endcomment -%}
+{%- assign qty_n = qty | plus: 0 -%}
+{%- if qty_n > 1 -%}
+  {%- assign unit_ref = section.settings.compare_unit_pesos | default: 39899 | plus: 0 -%}
+  {%- assign compare_total = unit_ref | times: qty_n -%}
+  {%- render 'format-ars-money', amount: compare_total -%}
+{%- endif -%}

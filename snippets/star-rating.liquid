@@ -1,0 +1,5 @@
+<div class="stars{% if size == 'sm' %} stars--sm{% endif %}" aria-hidden="true">
+  {%- for i in (1..count) -%}
+    {% render 'icon', name: 'star', class: 'icon icon--pink' %}
+  {%- endfor -%}
+</div>

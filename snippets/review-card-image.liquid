@@ -1,0 +1,48 @@
+{%- comment -%}
+  Imagen optimizada para tarjetas de reseña (carrusel).
+  Parámetros: image, asset_path, alt, eager (true = primera slide visible)
+{%- endcomment -%}
+{%- liquid
+  assign review_width = 448
+  assign review_sizes = '(max-width: 767px) 90vw, 28rem'
+  assign photo_class = 'review-card__photo'
+-%}
+{%- if image != blank -%}
+  {%- assign src_1x = image | image_url: width: review_width %}
+  {%- assign src_2x = image | image_url: width: 896 %}
+  <img
+    class="{{ photo_class }}"
+    alt="{{ alt | escape }}"
+    width="{{ review_width }}"
+    height="{{ review_width }}"
+    decoding="async"
+    sizes="{{ review_sizes }}"
+    {% if eager %}
+      src="{{ src_1x }}"
+      srcset="{{ src_1x }} 1x, {{ src_2x }} 2x"
+      loading="eager"
+      fetchpriority="high"
+    {% else %}
+      data-review-img
+      data-src="{{ src_1x }}"
+      data-srcset="{{ src_1x }} 1x, {{ src_2x }} 2x"
+      data-sizes="{{ review_sizes }}"
+    {% endif %}
+  >
+{%- elsif asset_path != blank -%}
+  <img
+    class="{{ photo_class }}"
+    alt="{{ alt | escape }}"
+    width="{{ review_width }}"
+    height="{{ review_width }}"
+    decoding="async"
+    {% if eager %}
+      src="{{ asset_path | asset_url }}"
+      loading="eager"
+      fetchpriority="high"
+    {% else %}
+      data-review-img
+      data-src="{{ asset_path | asset_url }}"
+    {% endif %}
+  >
+{%- endif -%}

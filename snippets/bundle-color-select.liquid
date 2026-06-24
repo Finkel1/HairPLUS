@@ -1,0 +1,46 @@
+{%- comment -%} Selector de color personalizado (sincronizado con select oculto). {%- endcomment -%}
+<div class="color-dropdown color-dropdown--empty" data-color-dropdown>
+  <select
+    class="color-dropdown__native"
+    data-bundle-color-select
+    aria-label="{{ slot_label | escape }}"
+    tabindex="-1"
+  >
+    <option value="" selected disabled hidden>Elegí color</option>
+    {%- for value in color_option.values -%}
+      <option value="{{ value | escape }}">{{ value }}</option>
+    {%- endfor -%}
+  </select>
+
+  <button
+    type="button"
+    class="color-dropdown__trigger"
+    data-color-dropdown-trigger
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    aria-label="{{ slot_label | escape }}"
+  >
+    <span data-color-dropdown-label>Elegí color</span>
+    <span class="color-dropdown__chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="color-dropdown__panel" data-color-dropdown-panel hidden>
+    <ul class="color-dropdown__list" role="listbox">
+      {%- for value in color_option.values -%}
+        <li role="none">
+          <button
+            type="button"
+            class="color-dropdown__option"
+            role="option"
+            data-color-option
+            data-value="{{ value | escape }}"
+            data-color-name="{{ value | escape }}"
+            aria-selected="false"
+          >
+            <span class="color-dropdown__option-name">{{ value }}</span>
+          </button>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>

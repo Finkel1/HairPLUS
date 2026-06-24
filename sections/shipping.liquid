@@ -1,0 +1,46 @@
+<section class="section section--cream">
+  <div class="container-x">
+    <div class="grid-3">
+      {%- for block in section.blocks -%}
+        <div class="card card--white" {{ block.shopify_attributes }}>
+          <span class="benefit-card__icon" style="background:var(--pink);color:var(--ink)">
+            {% render 'icon', name: block.settings.icon, class: 'icon' %}
+          </span>
+          <h3 style="margin-top:1.25rem;font-size:1.25rem">{{ block.settings.title }}</h3>
+          <p class="text-muted" style="margin-top:0.5rem">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Envíos y confianza",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ítem",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icono", "default": "truck", "options": [
+          { "value": "truck", "label": "Camión" },
+          { "value": "shield-check", "label": "Escudo" },
+          { "value": "headphones", "label": "Atención" }
+        ]},
+        { "type": "text", "id": "title", "label": "Título", "default": "Envíos a todo el país" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Despachos cada 48 hs con Andreani. Llega en menos de una semana." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Envíos y confianza",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "title": "Envíos a todo el país", "text": "Despachos cada 48 hs con Andreani. Llega en menos de una semana." } },
+        { "type": "item", "settings": { "icon": "shield-check", "title": "Pago seguro", "text": "Tarjeta, transferencia o efectivo. Hasta 3 cuotas sin interés." } },
+        { "type": "item", "settings": { "icon": "headphones", "title": "Atención personalizada", "text": "Hablás con nosotros por WhatsApp. Respondemos rápido." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

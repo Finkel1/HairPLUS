@@ -1,0 +1,158 @@
+<div
+  class="purchase-toast"
+  id="purchase-toast"
+  data-purchase-toast
+  data-img-1="{{ 'purchase-toast-1.png' | asset_url }}"
+  data-img-2="{{ 'purchase-toast-2.png' | asset_url }}"
+  data-img-3="{{ 'purchase-toast-3.png' | asset_url }}"
+  aria-live="polite"
+  aria-atomic="true"
+  hidden
+>
+  <div class="purchase-toast__media">
+    <img
+      data-purchase-toast-img
+      src="{{ 'purchase-toast-1.png' | asset_url }}"
+      alt="HairPLUS"
+      width="88"
+      height="56"
+    >
+  </div>
+  <div class="purchase-toast__body">
+    <p class="purchase-toast__text" data-purchase-toast-text></p>
+    <p class="purchase-toast__meta" data-purchase-toast-meta></p>
+  </div>
+  <button type="button" class="purchase-toast__close" data-purchase-toast-close aria-label="Cerrar">
+    {% render 'icon', name: 'x', class: 'icon icon--sm' %}
+  </button>
+</div>
+
+<script>
+  (function () {
+    if (window.__auraPurchaseToastInit) return;
+    window.__auraPurchaseToastInit = true;
+
+    var toast = document.getElementById("purchase-toast");
+    if (!toast) return;
+
+    document.body.appendChild(toast);
+
+    var textEl = toast.querySelector("[data-purchase-toast-text]");
+    var metaEl = toast.querySelector("[data-purchase-toast-meta]");
+    var imgEl = toast.querySelector("[data-purchase-toast-img]");
+    var closeBtn = toast.querySelector("[data-purchase-toast-close]");
+    var hideTimer = null;
+    var lastKey = "";
+    var images = {
+      1: toast.getAttribute("data-img-1") || "",
+      2: toast.getAttribute("data-img-2") || "",
+      3: toast.getAttribute("data-img-3") || "",
+    };
+
+    var names = [
+      "María", "Valentina", "Camila", "Sofía", "Florencia", "Agustina", "Luciana", "Carolina",
+      "Gabriela", "Paula", "Natalia", "Verónica", "Andrea", "Silvina", "Mariana", "Daniela",
+      "Romina", "Fernanda", "Celeste", "Lucía", "Micaela", "Juliana", "Belén", "Rocío",
+      "Adriana", "Carina", "Patricia", "Griselda", "Norma", "Viviana", "Claudia", "Miriam",
+      "Ana", "Silvia", "Marisa", "Laura", "Beatriz", "Elena", "Jimena", "Sol", "Pilar",
+      "Antonella", "Macarena", "Aldana", "Evangelina", "Ayelén", "Mailén", "Yamila", "Candela", "Morena",
+    ];
+
+    var provinces = [
+      "Buenos Aires", "CABA", "Córdoba", "Santa Fe", "Mendoza", "Tucumán", "Entre Ríos", "Salta",
+      "Chaco", "Corrientes", "Misiones", "San Juan", "Jujuy", "Río Negro", "Neuquén", "Formosa",
+      "Chubut", "San Luis", "Catamarca", "La Rioja", "La Pampa", "Santiago del Estero", "Santa Cruz", "Tierra del Fuego",
+    ];
+
+    var timeLabels = [
+      "hace unos segundos", "hace 1 minuto", "hace 2 minutos", "hace 3 minutos",
+      "hace 5 minutos", "hace 8 minutos", "hace 12 minutos",
+    ];
+
+    function randomQty() {
+      var r = Math.random();
+      if (r < 0.5) return 3;
+      if (r < 0.75) return 2;
+      return 1;
+    }
+
+    function pickRandom(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function buildMessage() {
+      var name, province, qty, key, attempts = 0;
+      do {
+        name = pickRandom(names);
+        province = pickRandom(provinces);
+        qty = randomQty();
+        key = name + "|" + province + "|" + qty;
+        attempts += 1;
+      } while (key === lastKey && attempts < 12);
+      lastKey = key;
+      var units = qty === 1 ? "1 unidad" : qty + " unidades";
+      return {
+        qty: qty,
+        text: name + " compró " + units,
+        meta: province + " · " + pickRandom(timeLabels),
+      };
+    }
+
+    function hideToast() {
+      toast.classList.remove("is-visible");
+      window.setTimeout(function () {
+        toast.setAttribute("hidden", "");
+      }, 220);
+    }
+
+    function showToast() {
+      var message = buildMessage();
+      if (textEl) textEl.textContent = message.text;
+      if (metaEl) metaEl.textContent = message.meta;
+      if (imgEl && images[message.qty]) imgEl.src = images[message.qty];
+
+      toast.removeAttribute("hidden");
+      window.requestAnimationFrame(function () {
+        toast.classList.add("is-visible");
+      });
+
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(hideToast, 5200);
+    }
+
+    function setStickyOffset() {
+      var stickyVisible = document.querySelector(".sticky-cta.is-visible");
+      document.body.classList.toggle("has-sticky-cta", !!stickyVisible);
+    }
+
+    setStickyOffset();
+    window.setInterval(setStickyOffset, 500);
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        window.clearTimeout(hideTimer);
+        hideToast();
+      });
+    }
+
+    // Modo de prueba: abrí la URL con ?toast=1 para verlo al instante.
+    if (/[?&]toast=1\b/.test(window.location.search)) {
+      window.setTimeout(showToast, 600);
+      window.setInterval(showToast, 6500);
+      return;
+    }
+
+    window.setTimeout(showToast, 5000);
+    window.setTimeout(showToast, 20000);
+    window.setTimeout(showToast, 60000);
+
+    function scheduleRecurring() {
+      var delay = 150000 + Math.random() * 90000; // entre 2,5 y 4 min
+      window.setTimeout(function () {
+        showToast();
+        scheduleRecurring();
+      }, delay);
+    }
+    scheduleRecurring();
+  })();
+</script>

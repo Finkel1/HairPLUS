@@ -2,9 +2,66 @@
   {
     "name": "theme_info",
     "theme_name": "HairPLUS",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "HairPLUS",
     "theme_documentation_url": "https://github.com/Finkel1/HairPLUS",
     "theme_support_url": "https://github.com/Finkel1/HairPLUS/issues"
+  },
+  {
+    "name": "Colores",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Acento taupe",
+        "default": "#B8AA88"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Fondo claro",
+        "default": "#F9FAF8"
+      },
+      {
+        "type": "color",
+        "id": "color_foreground",
+        "label": "Navy / texto",
+        "default": "#0A2633"
+      }
+    ]
+  },
+  {
+    "name": "Producto",
+    "settings": [
+      {
+        "type": "product",
+        "id": "featured_product",
+        "label": "Producto principal (CTAs)"
+      },
+      {
+        "type": "text",
+        "id": "product_handle",
+        "label": "Handle del producto (fallback)",
+        "default": "hairplus-polvo-capilar",
+        "info": "URL: /products/HANDLE — usado si no elegís producto arriba."
+      }
+    ]
+  },
+  {
+    "name": "Redes sociales",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL",
+        "default": "https://www.instagram.com/"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp",
+        "label": "WhatsApp (número con código de país)",
+        "default": "5491100000000"
+      }
+    ]
   }
 ]

@@ -1,0 +1,128 @@
+<header class="site-header">
+  <div class="container-x site-header__inner">
+    <div class="site-header__group">
+      <button
+        type="button"
+        class="site-header__icon"
+        data-menu-open
+        aria-label="{{ 'sections.header.menu' | t }}"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        {% render 'icon', name: 'menu', class: 'icon' %}
+      </button>
+      <a href="{{ routes.search_url }}" class="site-header__icon" aria-label="{{ 'sections.header.search' | t }}">
+        {% render 'icon', name: 'search', class: 'icon' %}
+      </a>
+    </div>
+
+    {% render 'site-logo',
+      image: section.settings.logo_image,
+      alt: section.settings.logo_text,
+      link_class: 'site-header__logo',
+      img_class: 'site-header__logo-img',
+      loading: 'eager'
+    %}
+
+    <div class="site-header__group">
+      <a href="{{ routes.account_url }}" class="site-header__icon" aria-label="{{ 'sections.header.account' | t }}">
+        {% render 'icon', name: 'user', class: 'icon' %}
+      </a>
+      <button
+        type="button"
+        class="site-header__icon site-header__cart-link"
+        data-cart-drawer-open
+        aria-label="{{ 'sections.header.cart' | t }}"
+      >
+        {% render 'icon', name: 'cart', class: 'icon' %}
+        <span class="site-header__cart-count" data-header-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" data-mobile-nav aria-hidden="true">
+  <div class="mobile-nav__overlay" data-menu-close tabindex="-1" aria-hidden="true"></div>
+
+  <aside id="mobile-menu" class="mobile-nav__panel" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}">
+    <div class="mobile-nav__head">
+      {% render 'site-logo',
+        image: section.settings.logo_image,
+        alt: section.settings.logo_text,
+        link_class: 'mobile-nav__logo',
+        img_class: 'mobile-nav__logo-img'
+      %}
+      <button type="button" class="site-header__icon" data-menu-close aria-label="{{ 'sections.header.menu_close' | t }}">
+        {% render 'icon', name: 'x', class: 'icon' %}
+      </button>
+    </div>
+
+    <nav class="mobile-nav__links" aria-label="{{ 'sections.header.menu' | t }}">
+      {%- capture product_url -%}{% render 'product-cta-url' %}{%- endcapture -%}
+      {%- assign menu = linklists[section.settings.menu] -%}
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}
+          {%- assign link_title_normalized = link.title | strip | downcase -%}
+          {%- assign link_href = link.url -%}
+          {%- assign link_label = link.title -%}
+          {%- if link_title_normalized contains 'catalogo' or link_title_normalized contains 'catálogo' -%}
+            {%- assign link_href = product_url | strip -%}
+            {%- assign link_label = 'Producto' -%}
+          {%- endif -%}
+          <a href="{{ link_href }}" class="mobile-nav__link" data-menu-close>
+            {{ link_label }}
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="mobile-nav__link" data-menu-close>Inicio</a>
+        <a href="{{ product_url | strip }}" class="mobile-nav__link" data-menu-close>Comprar</a>
+        <a href="{{ routes.search_url }}" class="mobile-nav__link" data-menu-close>Buscar</a>
+        <a href="{{ routes.account_url }}" class="mobile-nav__link" data-menu-close>Mi cuenta</a>
+        <button type="button" class="mobile-nav__link mobile-nav__link--button" data-cart-drawer-open data-menu-close>
+          Carrito
+          {%- if cart.item_count > 0 -%} ({{ cart.item_count }}){%- endif -%}
+        </button>
+      {%- endif -%}
+    </nav>
+
+    {%- if section.settings.menu_cta_label != blank -%}
+      {%- capture product_url_cta -%}{% render 'product-cta-url' %}{%- endcapture -%}
+      <a href="{{ product_url_cta | strip }}" class="btn-primary mobile-nav__cta" data-menu-close>
+        {{ section.settings.menu_cta_label }}
+      </a>
+    {%- endif -%}
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "Encabezado",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo",
+      "info": "Si no elegís imagen, se usa el logo del tema."
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Texto alternativo del logo",
+      "default": "HairPLUS"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú móvil",
+      "default": "main-menu",
+      "info": "Creá un menú en Navegación con handle main-menu, o usá los enlaces por defecto."
+    },
+    {
+      "type": "text",
+      "id": "menu_cta_label",
+      "label": "Botón CTA en menú",
+      "default": "Encontrá tu tono"
+    }
+  ]
+}
+{% endschema %}

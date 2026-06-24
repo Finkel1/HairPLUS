@@ -1,0 +1,77 @@
+{%- comment -%}
+  Fila del carrito: una fila por color (variante) en bundle; otras líneas sin agrupar.
+{%- endcomment -%}
+{%- assign line_qty = line_qty | default: item.quantity | default: 1 -%}
+<tr
+  class="cart-bundle__row{% if is_bundle_product %} cart-bundle__row--bundle{% endif %}"
+  {% if line_index %}data-cart-line="{{ line_index }}"{% endif %}
+  data-variant-id="{{ variant_id | default: item.variant_id }}"
+  data-is-bundle="{{ is_bundle_product }}"
+  {% if is_bundle_product -%}
+    data-line-qty="{{ line_qty }}"
+    {%- if item.variant.inventory_management != null and item.variant.inventory_policy != 'continue' -%}
+      data-variant-max="{{ item.variant.inventory_quantity }}"
+    {%- endif -%}
+  {%- endif -%}
+>
+  <td class="cart-bundle__media">
+    {%- if item.image -%}
+      <img
+        src="{{ item.image | image_url: width: 160 }}"
+        alt="{{ item.product.title | escape }}"
+        width="72"
+        height="72"
+        loading="lazy"
+        class="cart-bundle__img"
+      >
+    {%- endif -%}
+  </td>
+  <td class="cart-bundle__product">
+    <div class="cart-bundle__product-name">{{ item.product.title }}</div>
+    {%- if is_bundle_product -%}
+      {%- unless item.variant.title == 'Default Title' -%}
+        <p class="cart-bundle__variant">{{ item.variant.title }}</p>
+      {%- endunless -%}
+      <div class="cart-bundle__units-row">
+        <div class="cart-qty-stepper cart-qty-stepper--row">
+          <button
+            type="button"
+            class="cart-qty-stepper__btn"
+            data-cart-line-qty-down
+            aria-label="Quitar unidad"
+          >-</button>
+          <span class="cart-qty-stepper__value" data-cart-line-qty-value>{{ line_qty }}</span>
+          <button
+            type="button"
+            class="cart-qty-stepper__btn"
+            data-cart-line-qty-up
+            aria-label="Agregar unidad"
+          >+</button>
+        </div>
+      </div>
+    {%- else -%}
+      {%- unless item.variant.title == 'Default Title' -%}
+        <p class="cart-bundle__variant">{{ item.variant.title }}</p>
+      {%- endunless -%}
+    {%- endif -%}
+  </td>
+  <td class="cart-bundle__end">
+    <div class="cart-bundle__end-inner">
+      <span class="cart-bundle__price" data-line-display-price>
+        {%- if is_bundle_product -%}
+          {%- render 'format-ars-money', amount: row_total -%}
+        {%- else -%}
+          {{ item.final_line_price | money }}
+        {%- endif -%}
+      </span>
+      <button
+        type="button"
+        class="cart-bundle__remove"
+        data-cart-remove
+        aria-label="Quitar {{ item.product.title | escape }}"
+      >
+        {% render 'icon', name: 'x', class: 'icon icon--sm' %}
+      </button>
+    </div>
+  </td>
+</tr>

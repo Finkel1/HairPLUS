@@ -1,0 +1,43 @@
+{%- comment -%}
+  Carrusel de tarjetas de reseña (foto + texto + estrellas + nombre).
+  Requiere: section con blocks tipo "review".
+{%- endcomment -%}
+<div class="reviews-carousel mt-10" data-reviews-carousel>
+  <button type="button" class="reviews-carousel__btn" data-review-prev aria-label="Anterior">
+    {% render 'icon', name: 'chevron-left', class: 'icon' %}
+  </button>
+
+  <div class="reviews-carousel__stage" data-review-swipe>
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign star_count = block.settings.stars | default: 5
+        assign img_file = block.settings.fallback_image
+      -%}
+      <article
+        class="reviews-carousel__card{% unless forloop.first %} hidden{% endunless %}"
+        data-review-slide
+        {{ block.shopify_attributes }}
+      >
+        <div class="review-card__img">
+          {% render 'review-card-image',
+            image: block.settings.image,
+            asset_path: img_file,
+            alt: block.settings.name,
+            eager: forloop.first
+          %}
+        </div>
+        <div class="review-card__body">
+          <p class="review-card__text">"{{ block.settings.text }}"</p>
+          <div class="review-card__stars">
+            {% render 'star-rating', count: star_count, size: 'sm' %}
+          </div>
+          <p class="review-card__name">{{ block.settings.name }}</p>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+
+  <button type="button" class="reviews-carousel__btn" data-review-next aria-label="Siguiente">
+    {% render 'icon', name: 'chevron-right', class: 'icon' %}
+  </button>
+</div>

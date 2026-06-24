@@ -1,0 +1,13 @@
+{%- comment -%}
+  URL fija del producto principal para todos los CTAs.
+{%- endcomment -%}
+{%- liquid
+  assign handle = 'polvo-capilar-rellenador'
+  assign target = all_products[handle]
+
+  if target != blank
+    echo target.url
+  else
+    echo routes.root_url | append: 'products/' | append: handle
+  endif
+-%}

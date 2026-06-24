@@ -1,0 +1,94 @@
+<section class="hero">
+  <div class="container-x">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        <h1>
+          {{ section.settings.heading_line_1 }}<br>
+          {{ section.settings.heading_line_2 }}<br>
+          <span class="text-pink">{{ section.settings.heading_highlight }}</span>
+        </h1>
+        <p class="hero__desc">{{ section.settings.description }}</p>
+        <div class="hero__actions">
+          {%- capture product_page_url -%}{%- render 'product-cta-url' -%}{%- endcapture -%}
+          {%- assign product_page_url = product_page_url | strip -%}
+          {%- if section.settings.primary_label != blank -%}
+            <a href="{{ product_page_url }}" class="btn-primary">
+              {{ section.settings.primary_label }}
+              {% render 'icon', name: 'arrow-right', class: 'icon icon--sm' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.secondary_label != blank -%}
+            <a href="{{ section.settings.secondary_link }}" class="btn-secondary">{{ section.settings.secondary_label }}</a>
+          {%- endif -%}
+        </div>
+        <ul class="hero__badges">
+          {%- for block in section.blocks -%}
+            <li class="hero__badge" {{ block.shopify_attributes }}>
+              <span class="hero__badge-icon">
+                {% render 'icon', name: block.settings.icon, class: 'icon icon--sm' %}
+              </span>
+              {{ block.settings.label }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div class="hero__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'eager', class: 'hero__media-img', alt: section.settings.image.alt | default: 'Antes y después con HairPLUS' }}
+        {%- else -%}
+          <img
+            class="hero__media-img"
+            src="{{ 'hero-product.jpg' | asset_url }}"
+            alt="HairPLUS polvo capilar"
+            width="1024"
+            height="1024"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Polvo capilar densificador" },
+    { "type": "text", "id": "heading_line_1", "label": "Título línea 1", "default": "Más pelo." },
+    { "type": "text", "id": "heading_line_2", "label": "Título línea 2", "default": "Al instante." },
+    { "type": "text", "id": "heading_highlight", "label": "Título destacado", "default": "Sin compromiso." },
+    { "type": "textarea", "id": "description", "label": "Descripción", "default": "Disimula entradas, coronilla y zonas con poco pelo. Cubre canas y raíces. Sin proceso, sin peluquería." },
+    { "type": "image_picker", "id": "image", "label": "Imagen principal" },
+    { "type": "text", "id": "primary_label", "label": "Botón principal (siempre va al producto)", "default": "Comprar ahora" },
+    { "type": "text", "id": "secondary_label", "label": "Botón secundario", "default": "Ver resultados" },
+    { "type": "url", "id": "secondary_link", "label": "Enlace botón secundario (solo “Ver resultados”)" }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icono", "default": "droplets", "options": [
+          { "value": "droplets", "label": "Gotas" },
+          { "value": "shield", "label": "Escudo" },
+          { "value": "wind", "label": "Viento" },
+          { "value": "sparkles", "label": "Brillo" }
+        ]},
+        { "type": "text", "id": "label", "label": "Texto", "default": "No mancha" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "badge", "settings": { "icon": "droplets", "label": "No mancha" } },
+        { "type": "badge", "settings": { "icon": "shield", "label": "Resistente al agua" } },
+        { "type": "badge", "settings": { "icon": "wind", "label": "Resiste sudor" } },
+        { "type": "badge", "settings": { "icon": "sparkles", "label": "Resultado natural" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

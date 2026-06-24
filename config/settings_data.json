@@ -1,3 +1,29 @@
 {
-  "current": {}
+  "current": {
+    "color_primary": "#B8AA88",
+    "color_background": "#F9FAF8",
+    "color_foreground": "#0A2633",
+    "product_handle": "hairplus-polvo-capilar",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_text": "HairPLUS"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "logo_text": "HairPLUS",
+          "tagline": "Grooming masculino argentino. Polvo capilar densificador.",
+          "show_instagram": true,
+          "show_contact": true,
+          "show_faq": true,
+          "show_shipping": true,
+          "show_terms": true
+        }
+      }
+    },
+    "content_for_index": []
+  }
 }

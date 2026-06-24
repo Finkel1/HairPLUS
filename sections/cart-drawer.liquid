@@ -1,0 +1,35 @@
+<div class="cart-drawer" data-cart-drawer aria-hidden="true">
+  <div class="cart-drawer__overlay" data-cart-drawer-close tabindex="-1" aria-hidden="true"></div>
+
+  <aside
+    class="cart-drawer__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'sections.cart.title' | t }}"
+  >
+    <div class="cart-drawer__head">
+      <h2 class="cart-drawer__title">{{ 'sections.cart.title' | t }}</h2>
+      <button
+        type="button"
+        class="cart-drawer__close site-header__icon"
+        data-cart-drawer-close
+        aria-label="{{ 'sections.cart.close' | t }}"
+      >
+        {% render 'icon', name: 'x', class: 'icon' %}
+      </button>
+    </div>
+
+    <div class="cart-drawer__body" data-cart-drawer-body>
+      {% render 'cart-bundle-content' %}
+    </div>
+  </aside>
+</div>
+
+<script>window.AuraMoneyFormat = {{ shop.money_format | json }};</script>
+
+{% schema %}
+{
+  "name": "Drawer del carrito",
+  "settings": []
+}
+{% endschema %}

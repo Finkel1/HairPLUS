@@ -1,0 +1,192 @@
+{%- liquid
+  assign contact_email = section.settings.email | default: 'atencion@HairPLUS.com.ar'
+  assign whatsapp_raw = section.settings.whatsapp | default: '5492615100670' | replace: ' ', '' | replace: '+', '' | replace: '-', ''
+  assign phone_label = section.settings.phone_label | default: '+54 9 261 510-0670'
+  assign whatsapp_url = 'https://wa.me/' | append: whatsapp_raw
+  assign whatsapp_message = section.settings.whatsapp_message | url_encode
+  if whatsapp_message != blank
+    assign whatsapp_url = whatsapp_url | append: '?text=' | append: whatsapp_message
+  endif
+-%}
+
+<section class="section section--cream contact-page">
+  <div class="container-x">
+    <div class="contact-page__header section-header">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h1>{{ page.title | default: section.settings.heading }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="contact-page__grid">
+      <article class="contact-card">
+        <div class="contact-card__icon" aria-hidden="true">
+          {% render 'icon', name: 'mail', class: 'icon' %}
+        </div>
+        <h2 class="contact-card__title">{{ section.settings.email_heading }}</h2>
+        <p class="contact-card__text">{{ section.settings.email_text }}</p>
+        <a href="mailto:{{ contact_email }}" class="contact-card__link">
+          {{ contact_email }}
+        </a>
+      </article>
+
+      <article class="contact-card">
+        <div class="contact-card__icon" aria-hidden="true">
+          {% render 'icon', name: 'phone', class: 'icon' %}
+        </div>
+        <h2 class="contact-card__title">{{ section.settings.whatsapp_heading }}</h2>
+        <p class="contact-card__text">{{ section.settings.whatsapp_text }}</p>
+        <a
+          href="{{ whatsapp_url }}"
+          class="contact-card__link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ phone_label }}
+        </a>
+        <a href="{{ whatsapp_url }}" class="btn-primary contact-card__cta" target="_blank" rel="noopener noreferrer">
+          Escribinos por WhatsApp
+        </a>
+      </article>
+    </div>
+
+    {%- if section.settings.note != blank -%}
+      <p class="contact-page__note">{{ section.settings.note }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.show_form -%}
+      <div class="contact-page__form-wrap">
+        <h2 class="contact-page__form-title">{{ section.settings.form_heading }}</h2>
+        {% form 'contact', class: 'contact-form' %}
+          {%- if form.posted_successfully? -%}
+            <p class="contact-form__success" role="status">
+              {{ section.settings.form_success }}
+            </p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="contact-form__error" role="alert">
+              No pudimos enviar tu mensaje. Revisá los campos e intentá de nuevo.
+            </p>
+          {%- endif -%}
+
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="ContactFormName">Nombre</label>
+            <input
+              class="contact-form__input"
+              type="text"
+              id="ContactFormName"
+              name="contact[name]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="ContactFormEmail">Email</label>
+            <input
+              class="contact-form__input"
+              type="email"
+              id="ContactFormEmail"
+              name="contact[email]"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="ContactFormPhone">Teléfono (opcional)</label>
+            <input
+              class="contact-form__input"
+              type="tel"
+              id="ContactFormPhone"
+              name="contact[phone]"
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="ContactFormMessage">Mensaje</label>
+            <textarea
+              class="contact-form__input contact-form__textarea"
+              id="ContactFormMessage"
+              name="contact[body]"
+              rows="5"
+              required
+            >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          </div>
+
+          <button type="submit" class="btn-dark contact-form__submit">Enviar mensaje</button>
+        {% endform %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contacto",
+  "tag": "section",
+  "class": "main-contact-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta", "default": "Contacto" },
+    { "type": "text", "id": "heading", "label": "Título (si la página no tiene título)", "default": "Contacto" },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introducción",
+      "default": "¿Tenés dudas sobre tu tono, el envío o tu pedido? Escribinos y te respondemos lo antes posible."
+    },
+    { "type": "header", "content": "Email" },
+    { "type": "text", "id": "email", "label": "Email", "default": "atencion@HairPLUS.com.ar" },
+    { "type": "text", "id": "email_heading", "label": "Título email", "default": "Email" },
+    {
+      "type": "text",
+      "id": "email_text",
+      "label": "Texto email",
+      "default": "Para consultas generales, cambios o seguimiento de tu compra."
+    },
+    { "type": "header", "content": "WhatsApp" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp (solo números)", "default": "5492615100670" },
+    { "type": "text", "id": "phone_label", "label": "Teléfono visible", "default": "+54 9 261 510-0670" },
+    {
+      "type": "text",
+      "id": "whatsapp_message",
+      "label": "Mensaje predeterminado de WhatsApp",
+      "default": "Hola HairPLUS, quiero hacer una consulta."
+    },
+    { "type": "text", "id": "whatsapp_heading", "label": "Título WhatsApp", "default": "WhatsApp" },
+    {
+      "type": "text",
+      "id": "whatsapp_text",
+      "label": "Texto WhatsApp",
+      "default": "Chateá con nosotros para una respuesta más rápida."
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Nota al pie",
+      "default": "Horario de atención: lunes a viernes de 9 a 18 h (hora Argentina)."
+    },
+    { "type": "header", "content": "Formulario (opcional)" },
+    { "type": "checkbox", "id": "show_form", "label": "Mostrar formulario de contacto", "default": false },
+    { "type": "text", "id": "form_heading", "label": "Título del formulario", "default": "O dejanos tu mensaje" },
+    {
+      "type": "text",
+      "id": "form_success",
+      "label": "Mensaje de éxito",
+      "default": "¡Gracias! Recibimos tu mensaje y te vamos a responder pronto."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contacto"
+    }
+  ]
+}
+{% endschema %}

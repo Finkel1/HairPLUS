@@ -1,0 +1,12 @@
+{%- comment -%} Formato $XXX.XXX (pesos, separador de miles con punto). {%- endcomment -%}
+{%- assign n = amount | plus: 0 -%}
+{%- assign s = n | append: '' -%}
+{%- assign len = s.size -%}
+{%- if len <= 3 -%}
+${{ s }}
+{%- else -%}
+  {%- assign head_len = len | modulo: 3 -%}
+  {%- if head_len == 0 -%}{%- assign head_len = 3 -%}{%- endif -%}
+  {%- assign pos = head_len -%}
+  ${{ s | slice: 0, head_len }}{%- for i in (1..12) -%}{%- if pos >= len -%}{%- break -%}{%- endif -%}.{{ s | slice: pos, 3 }}{%- assign pos = pos | plus: 3 -%}{%- endfor -%}
+{%- endif -%}
