@@ -3,14 +3,34 @@
 ## Archivos incluidos
 
 ```
+layout/                     ← layout base (requerido por Shopify)
+config/                     ← configuración del tema
+assets/                     ← CSS base
+locales/                    ← traducciones
 sections/
-  hairplus-landing.liquid   ← landing page (página independiente)
-  hairplus-product.liquid   ← página de producto (template product)
+  hairplus-landing.liquid   ← landing page
+  hairplus-product.liquid   ← página de producto
+  main-*.liquid             ← secciones mínimas (cart, 404, etc.)
 templates/
-  page.hairplus.json        ← template de página (landing)
-  product.hairplus.json     ← template de producto
-README.md                   ← este archivo
+  index.json                ← homepage (landing HairPLUS)
+  product.json              ← producto por defecto
+  page.hairplus.json        ← template alternativo de landing
+  product.hairplus.json     ← template alternativo de producto
+  …                         ← cart, 404, collection, etc.
+README.md
 ```
+
+---
+
+## Conectar con Shopify vía GitHub
+
+1. En **Shopify Admin → Online Store → Themes → Add theme → Connect from GitHub**
+2. Autorizá GitHub y elegí el repo **`Finkel1/HairPLUS`**
+3. Seleccioná la rama **`main`**
+4. Shopify validará el tema y lo importará automáticamente
+5. Publicá el tema cuando esté listo
+
+> El repo incluye la estructura completa de un tema OS 2.0 (`layout/`, `config/`, `locales/`, etc.) que Shopify exige para la integración con GitHub.
 
 ---
 

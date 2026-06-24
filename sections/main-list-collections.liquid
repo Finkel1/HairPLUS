@@ -1,0 +1,18 @@
+<div class="hp-minimal" style="font-family:system-ui,sans-serif;max-width:480px;margin:48px auto;padding:0 24px;color:#0A2633;">
+  <h1 style="font-size:1.5rem;margin-bottom:16px;">Collections</h1>
+  <ul style="list-style:none;padding:0;margin:0;">
+    {%- for collection in collections -%}
+      <li style="padding:12px 0;border-bottom:1px solid #E8E4D6;">
+        <a href="{{ collection.url }}" style="color:#0A2633;text-decoration:none;font-weight:600;">{{ collection.title }}</a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "tag": "section",
+  "class": "section-main-list-collections"
+}
+{% endschema %}
