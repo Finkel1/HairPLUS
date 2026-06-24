@@ -1,0 +1,204 @@
+/* HairPLUS · Desktop & tablet responsive */
+
+@media (min-width: 768px) {
+  .hp-wrap {
+    max-width: none;
+    padding-bottom: 0;
+  }
+
+  /* ── Nav ── */
+  .hp-nav {
+    padding: 18px 40px;
+  }
+  .hp-nav img { height: 32px; }
+  .hp-nav-name { font-size: 17px; }
+  .hp-nav-cta { font-size: 14px; padding: 11px 24px; }
+
+  /* ── Typography ── */
+  .hp-h2 { font-size: 2.25rem; }
+  .hp-h2-sm { font-size: 1.75rem; }
+  .hp-eyebrow-sm { font-size: 11px; }
+
+  /* ── Sections ── */
+  .hp-section       { padding: 72px 40px; }
+  .hp-section-white { padding: 64px 40px; }
+  .hp-section-light { padding: 72px 40px; }
+
+  .hp-section,
+  .hp-section-white,
+  .hp-section-light,
+  .hp-proof,
+  .hp-footer {
+    padding-left: max(40px, calc((100% - 1200px) / 2));
+    padding-right: max(40px, calc((100% - 1200px) / 2));
+  }
+
+  /* ── Proof bar ── */
+  .hp-proof { padding-top: 24px; padding-bottom: 24px; }
+  .hp-proof-num { font-size: 28px; }
+  .hp-proof-label { font-size: 11px; }
+
+  /* ── Features ── */
+  .hp-features-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .hp-features-block .hp-features-img { margin-bottom: 0; }
+  .hp-features-list { gap: 16px; }
+
+  /* ── Lifestyle ── */
+  .hp-lifestyle { aspect-ratio: 21/9; max-height: 560px; }
+  .hp-lifestyle-overlay { padding: 48px 40px; }
+  .hp-lifestyle-quote { font-size: 2rem; }
+
+  /* ── Steps ── */
+  .hp-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .hp-step {
+    flex-direction: column;
+    border-bottom: none;
+    padding: 0;
+    gap: 12px;
+  }
+  .hp-step-num { font-size: 2.5rem; width: auto; }
+
+  /* ── FAQ ── */
+  .hp-faq-list { max-width: 800px; }
+  .hp-faq-q { font-size: 15px; }
+  .hp-faq-a { font-size: 14px; }
+
+  /* ── Testimonials ── */
+  .hp-testimonials {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .hp-testimonial { padding: 24px; }
+
+  /* ── CTA ── */
+  .hp-cta {
+    padding: 80px 40px;
+    padding-left: max(40px, calc((100% - 1200px) / 2));
+    padding-right: max(40px, calc((100% - 1200px) / 2));
+  }
+  .hp-cta-title { font-size: 3rem; }
+  .hp-cta-sub { font-size: 17px; }
+  .hp-cta-actions { max-width: 420px; margin: 0 auto; }
+  .hp-cta .hp-btn-primary { max-width: 420px; margin-left: auto; margin-right: auto; }
+
+  /* ── Footer ── */
+  .hp-footer { padding: 40px; }
+  .hp-footer p { font-size: 12px; }
+
+  /* ── Landing hero ── */
+  .hp-hero {
+    padding: 64px 40px;
+    padding-left: max(40px, calc((100% - 1200px) / 2));
+    padding-right: max(40px, calc((100% - 1200px) / 2));
+  }
+  .hp-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hp-hero h1 { font-size: 3.5rem; }
+  .hp-hero-sub { font-size: 17px; }
+  .hp-hero-img { border-radius: 16px; }
+  .hp-hero-actions { max-width: 360px; }
+
+  /* ── Shade (landing standalone section) ── */
+  .hp-shade-section .hp-shade-grid { margin-top: 20px; }
+
+  /* ── Sticky bar: solo mobile ── */
+  .hp-sticky { display: none !important; }
+}
+
+@media (min-width: 1024px) {
+  /* ── Product hero: galería + buy box ── */
+  .hp-product-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 40px 0;
+    align-items: start;
+  }
+
+  .hp-gallery {
+    padding: 0 32px 0 0;
+    background: transparent;
+    position: sticky;
+    top: 80px;
+  }
+
+  .hp-gallery-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .hp-gallery-main {
+    flex: 1;
+    border-radius: 16px;
+    aspect-ratio: 1/1;
+  }
+
+  .hp-gallery-thumbs {
+    flex-direction: column;
+    padding: 0;
+    overflow: visible;
+    width: 72px;
+    flex-shrink: 0;
+  }
+
+  .hp-gallery-thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+  }
+
+  .hp-gallery-dots { display: none; }
+
+  .hp-buybox {
+    border-radius: 20px;
+    padding: 40px 36px;
+    position: sticky;
+    top: 80px;
+    gap: 18px;
+  }
+
+  .hp-buybox h1 { font-size: 2.25rem; }
+  .hp-buybox-sub { font-size: 16px; }
+  .hp-price-display { font-size: 1.5rem; }
+
+  .hp-buybox .hp-shade-btn {
+    border-color: rgba(249,250,248,0.25);
+    background: rgba(255,255,255,0.08);
+    color: #F9FAF8;
+  }
+  .hp-buybox .hp-shade-btn.active {
+    border-color: #B8AA88;
+    background: #B8AA88;
+    color: #0A2633;
+  }
+
+  .hp-description { font-size: 16px; max-width: 720px; }
+
+  .hp-cta-title { font-size: 3.25rem; }
+}
+
+@media (min-width: 1280px) {
+  .hp-hero h1 { font-size: 4rem; }
+  .hp-buybox h1 { font-size: 2.5rem; }
+  .hp-testimonials { grid-template-columns: repeat(4, 1fr); }
+}

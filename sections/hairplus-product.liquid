@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{{ 'hairplus-desktop.css' | asset_url | stylesheet_tag }}
 
 <style>
   .hp-wrap *, .hp-wrap *::before, .hp-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,6 +84,12 @@
   }
   .hp-gallery-thumb.active { border-color: #0A2633; }
   .hp-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .hp-gallery-layout {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
 
   /* ── Buy box ── */
   .hp-buybox {
@@ -278,28 +285,12 @@
     <a href="#hp-buybox" class="hp-nav-cta">Comprar</a>
   </nav>
 
+  <div class="hp-product-hero">
   <!-- ── Gallery ── -->
   {%- if hp.media.size > 0 -%}
   <div class="hp-gallery" id="hp-gallery">
-    <div class="hp-gallery-main">
-      {%- assign first_media = hp.media.first -%}
-      <img id="hp-gallery-img"
-           src="{{ first_media | image_url: width: 780 }}"
-           alt="{{ first_media.alt | default: hp.title }}"
-           width="780" height="780" loading="eager">
-    </div>
-    {%- if hp.media.size > 1 -%}
-      {%- if hp.media.size <= 5 -%}
-      <div class="hp-gallery-dots" id="hp-gallery-dots">
-        {%- for media in hp.media -%}
-          <button type="button"
-                  class="hp-gallery-dot{% if forloop.first %} active{% endif %}"
-                  data-index="{{ forloop.index0 }}"
-                  aria-label="Imagen {{ forloop.index }}"
-                  onclick="hpGalleryGo({{ forloop.index0 }})"></button>
-        {%- endfor -%}
-      </div>
-      {%- else -%}
+    <div class="hp-gallery-layout">
+      {%- if hp.media.size > 1 -%}
       <div class="hp-gallery-thumbs" id="hp-gallery-thumbs">
         {%- for media in hp.media -%}
           <button type="button"
@@ -307,11 +298,29 @@
                   data-index="{{ forloop.index0 }}"
                   aria-label="Imagen {{ forloop.index }}"
                   onclick="hpGalleryGo({{ forloop.index0 }})">
-            {{ media | image_url: width: 112 | image_tag: loading: 'lazy', alt: media.alt }}
+            {{ media | image_url: width: 144 | image_tag: loading: 'lazy', alt: media.alt, width: 72, height: 72 }}
           </button>
         {%- endfor -%}
       </div>
       {%- endif -%}
+      <div class="hp-gallery-main">
+        {%- assign first_media = hp.media.first -%}
+        <img id="hp-gallery-img"
+             src="{{ first_media | image_url: width: 1200 }}"
+             alt="{{ first_media.alt | default: hp.title }}"
+             width="1200" height="1200" loading="eager">
+      </div>
+    </div>
+    {%- if hp.media.size > 1 -%}
+    <div class="hp-gallery-dots" id="hp-gallery-dots">
+      {%- for media in hp.media -%}
+        <button type="button"
+                class="hp-gallery-dot{% if forloop.first %} active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-label="Imagen {{ forloop.index }}"
+                onclick="hpGalleryGo({{ forloop.index0 }})"></button>
+      {%- endfor -%}
+    </div>
     {%- endif -%}
   </div>
   {%- endif -%}
@@ -393,6 +402,7 @@
       <span>{{ section.settings.social_proof }}</span>
     </div>
   </section>
+  </div>
 
   <!-- ── Proof bar ── -->
   <div class="hp-proof">
@@ -431,9 +441,10 @@
     <div class="hp-eyebrow-sm">El producto</div>
     <h2 class="hp-h2">Todo lo que necesitás, en un estuche.</h2>
 
+    <div class="hp-features-block">
     {%- if section.settings.features_image != blank -%}
     <div class="hp-features-img">
-      {{ section.settings.features_image | image_url: width: 780
+      {{ section.settings.features_image | image_url: width: 1200
          | image_tag: loading: 'lazy', alt: hp.title }}
     </div>
     {%- endif -%}
@@ -475,6 +486,7 @@
           <div class="hp-feature-desc">4g de polvo concentrado. El frasco es chico pero no se acaba nunca.</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -565,22 +577,24 @@
   <div class="hp-cta">
     <h2 class="hp-cta-title">Que te veas<br><em>como te sentís.</em></h2>
     <p class="hp-cta-sub">Sin proceso. Sin compromiso.<br>Resultados desde el primer uso.</p>
-    <div class="hp-cta-price" id="hp-price-cta">
-      {%- if on_sale -%}
-        <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
-      {%- endif -%}
-      <span id="hp-cta-price-value">{{ cv.price | money_without_trailing_zeros }}</span> ARS
+    <div class="hp-cta-actions">
+      <div class="hp-cta-price" id="hp-price-cta">
+        {%- if on_sale -%}
+          <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
+        {%- endif -%}
+        <span id="hp-cta-price-value">{{ cv.price | money_without_trailing_zeros }}</span> ARS
+      </div>
+      {%- form 'product', hp, id: 'hp-cta-form' -%}
+        <input type="hidden" name="id" value="{{ cv.id }}" class="hp-variant-input-sync">
+        <button type="submit" class="hp-btn-primary hp-submit-sync" style="font-size:17px;padding:18px 32px;"
+                {%- unless hp.available %} disabled{%- endunless -%}>
+          {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
+        </button>
+      {%- endform -%}
+      <p style="font-size:12px;color:rgba(249,250,248,0.65);margin-top:10px;">
+        3 cuotas sin interés disponibles
+      </p>
     </div>
-    {%- form 'product', hp, id: 'hp-cta-form' -%}
-      <input type="hidden" name="id" value="{{ cv.id }}" class="hp-variant-input-sync">
-      <button type="submit" class="hp-btn-primary hp-submit-sync" style="font-size:17px;padding:18px 32px;"
-              {%- unless hp.available %} disabled{%- endunless -%}>
-        {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
-      </button>
-    {%- endform -%}
-    <p style="font-size:12px;color:rgba(249,250,248,0.65);margin-top:10px;">
-      3 cuotas sin interés disponibles
-    </p>
     <div class="hp-trust-row">
       <div class="hp-trust-item">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -633,7 +647,7 @@
   (function() {
     var galleryMedia = [
       {%- for media in hp.media -%}
-      "{{ media | image_url: width: 780 }}"{% unless forloop.last %},{% endunless %}
+      "{{ media | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ];
     var galleryIndex = 0;

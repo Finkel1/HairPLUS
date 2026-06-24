@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{{ 'hairplus-desktop.css' | asset_url | stylesheet_tag }}
 
 <style>
   .hp-wrap *, .hp-wrap *::before, .hp-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,6 +69,9 @@
   }
   .hp-hero h1 em { color: #B8AA88; font-style: normal; }
   .hp-hero-sub { font-size: 15px; line-height: 1.6; color: rgba(249,250,248,0.85); }
+  .hp-hero-grid { display: flex; flex-direction: column; gap: 18px; }
+  .hp-hero-content { display: flex; flex-direction: column; gap: 18px; }
+  .hp-hero-actions { display: flex; flex-direction: column; gap: 10px; }
   .hp-hero-img {
     width: 100%; border-radius: 14px; overflow: hidden;
     aspect-ratio: 1/1; background: #0d2e3e;
@@ -220,51 +224,57 @@
 
   <!-- ── Hero ── -->
   <section class="hp-hero">
-    <div class="hp-eyebrow">{{ section.settings.hero_eyebrow }}</div>
+    <div class="hp-hero-grid">
+      <div class="hp-hero-content">
+        <div class="hp-eyebrow">{{ section.settings.hero_eyebrow }}</div>
 
-    <h1>
-      {%- assign title_lines = section.settings.hero_title | split: '\n' -%}
-      {%- if title_lines.size > 1 -%}
-        {{ title_lines[0] }}<br><em>{{ title_lines[1] }}</em>
-      {%- else -%}
-        {{ section.settings.hero_title }}
-      {%- endif -%}
-    </h1>
+        <h1>
+          {%- assign title_lines = section.settings.hero_title | split: '\n' -%}
+          {%- if title_lines.size > 1 -%}
+            {{ title_lines[0] }}<br><em>{{ title_lines[1] }}</em>
+          {%- else -%}
+            {{ section.settings.hero_title }}
+          {%- endif -%}
+        </h1>
 
-    <p class="hp-hero-sub">{{ section.settings.hero_subtitle }}</p>
+        <p class="hp-hero-sub">{{ section.settings.hero_subtitle }}</p>
 
-    <div class="hp-hero-img">
-      {%- if section.settings.hero_image != blank -%}
-        {{ section.settings.hero_image | image_url: width: 780
-           | image_tag: loading: 'eager', alt: hp.title }}
-      {%- elsif hp.featured_image != blank -%}
-        {{ hp.featured_image | image_url: width: 780
-           | image_tag: loading: 'eager', alt: hp.title }}
-      {%- endif -%}
-    </div>
+        <div class="hp-hero-actions">
+          <div class="hp-price-display">
+            {%- if on_sale -%}
+              <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
+            {%- endif -%}
+            {{ hp.price | money_without_trailing_zeros }} ARS
+          </div>
 
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div class="hp-price-display">
-        {%- if on_sale -%}
-          <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
-        {%- endif -%}
-        {{ hp.price | money_without_trailing_zeros }} ARS
+          {%- form 'product', hp, id: 'hp-hero-form' -%}
+            <input type="hidden" name="id" value="{{ cv.id }}">
+            <button type="submit" class="hp-btn-primary"
+                    {%- unless hp.available %} disabled{%- endunless -%}>
+              {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
+            </button>
+          {%- endform -%}
+
+          <a href="#hp-como-funciona" class="hp-btn-ghost">Ver cómo funciona</a>
+        </div>
+
+        <div class="hp-trust">
+          <span class="hp-stars">★ 4.9/5</span>
+          <span>{{ section.settings.social_proof }}</span>
+        </div>
       </div>
 
-      {%- form 'product', hp, id: 'hp-hero-form' -%}
-        <input type="hidden" name="id" value="{{ cv.id }}">
-        <button type="submit" class="hp-btn-primary"
-                {%- unless hp.available %} disabled{%- endunless -%}>
-          {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
-        </button>
-      {%- endform -%}
-
-      <a href="#hp-como-funciona" class="hp-btn-ghost">Ver cómo funciona</a>
-    </div>
-
-    <div class="hp-trust">
-      <span class="hp-stars">★ 4.9/5</span>
-      <span>{{ section.settings.social_proof }}</span>
+      <div class="hp-hero-visual">
+        <div class="hp-hero-img">
+          {%- if section.settings.hero_image != blank -%}
+            {{ section.settings.hero_image | image_url: width: 1200
+               | image_tag: loading: 'eager', alt: hp.title }}
+          {%- elsif hp.featured_image != blank -%}
+            {{ hp.featured_image | image_url: width: 1200
+               | image_tag: loading: 'eager', alt: hp.title }}
+          {%- endif -%}
+        </div>
+      </div>
     </div>
   </section>
 
@@ -293,7 +303,7 @@
 
   <!-- ── Variant / Shade selector ── -->
   {%- if hp.variants.size > 1 -%}
-  <div class="hp-section-white">
+  <div class="hp-section-white hp-shade-section">
     <div class="hp-eyebrow-sm">Elegí tu color</div>
     <h2 class="hp-h2-sm">{{ hp.variants.size }} tonos para un resultado indetectable.</h2>
     <div class="hp-shade-grid" id="hp-shades">
@@ -321,9 +331,10 @@
     <div class="hp-eyebrow-sm">El producto</div>
     <h2 class="hp-h2">Todo lo que necesitás, en un estuche.</h2>
 
+    <div class="hp-features-block">
     {%- if section.settings.features_image != blank -%}
     <div class="hp-features-img">
-      {{ section.settings.features_image | image_url: width: 780
+      {{ section.settings.features_image | image_url: width: 1200
          | image_tag: loading: 'lazy', alt: hp.title }}
     </div>
     {%- endif -%}
@@ -365,6 +376,7 @@
           <div class="hp-feature-desc">4g de polvo concentrado. El frasco es chico pero no se acaba nunca.</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -455,22 +467,24 @@
   <div class="hp-cta">
     <h2 class="hp-cta-title">Que te veas<br><em>como te sentís.</em></h2>
     <p class="hp-cta-sub">Sin proceso. Sin compromiso.<br>Resultados desde el primer uso.</p>
-    <div class="hp-cta-price">
-      {%- if on_sale -%}
-        <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
-      {%- endif -%}
-      {{ hp.price | money_without_trailing_zeros }} ARS
+    <div class="hp-cta-actions">
+      <div class="hp-cta-price">
+        {%- if on_sale -%}
+          <s>{{ hp.compare_at_price | money_without_trailing_zeros }}</s>
+        {%- endif -%}
+        {{ hp.price | money_without_trailing_zeros }} ARS
+      </div>
+      {%- form 'product', hp, id: 'hp-cta-form' -%}
+        <input type="hidden" name="id" value="{{ cv.id }}">
+        <button type="submit" class="hp-btn-primary" style="font-size:17px;padding:18px 32px;"
+                {%- unless hp.available %} disabled{%- endunless -%}>
+          {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
+        </button>
+      {%- endform -%}
+      <p style="font-size:12px;color:rgba(249,250,248,0.65);margin-top:10px;">
+        3 cuotas sin interés disponibles
+      </p>
     </div>
-    {%- form 'product', hp, id: 'hp-cta-form' -%}
-      <input type="hidden" name="id" value="{{ cv.id }}">
-      <button type="submit" class="hp-btn-primary" style="font-size:17px;padding:18px 32px;"
-              {%- unless hp.available %} disabled{%- endunless -%}>
-        {%- if hp.available -%}Comprar ahora{%- else -%}Sin stock{%- endif -%}
-      </button>
-    {%- endform -%}
-    <p style="font-size:12px;color:rgba(249,250,248,0.65);margin-top:10px;">
-      3 cuotas sin interés disponibles
-    </p>
     <div class="hp-trust-row">
       <div class="hp-trust-item">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
