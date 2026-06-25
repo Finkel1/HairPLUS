@@ -11,8 +11,8 @@
         {% render 'before-after',
           image_before: section.settings.image_before,
           image_after: section.settings.image_after,
-          fallback_before: 'before-after-antes.png',
-          fallback_after: 'before-after-despues.png',
+          fallback_before: 'before-after-antes.jpg',
+          fallback_after: 'before-after-despues.jpg',
           alt: section.settings.before_after_alt | default: 'Antes y después HairPLUS'
         %}
         <div class="before-after-gallery">
@@ -42,7 +42,7 @@
               }}
             {%- else -%}
               <img
-                src="{{ 'before-after-gallery-2.png' | asset_url }}"
+                src="{{ 'before-after-gallery-2.jpg' | asset_url }}"
                 alt="Antes y después con producto HairPLUS"
                 loading="lazy"
                 width="600"
@@ -53,7 +53,7 @@
         </div>
         {% render 'before-after-strip',
           strip_image: section.settings.strip_image,
-          fallback_strip: 'before-after-strip.png',
+          fallback_strip: 'before-after-strip.jpg',
           alt: section.settings.strip_alt
         %}
       </div>

@@ -27,6 +27,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {%- style -%}
+      :root {
+        --accent: {{ settings.color_primary }};
+        --pink: {{ settings.color_primary }};
+        --navy: {{ settings.color_foreground }};
+        --ink: {{ settings.color_foreground }};
+        --cream: {{ settings.color_background }};
+      }
+    {%- endstyle -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </head>
 
